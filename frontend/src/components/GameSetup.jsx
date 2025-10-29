@@ -24,6 +24,7 @@ import { generateRandomPlayer, EVENT_CATEGORIES } from '../mock/mockData';
 import { celebritiesService } from '../services/celebritiesService';
 import CustomPlayersList from './CustomPlayersList';
 import GroupManager from './GroupManager';
+import LayeredPortrait from './LayeredPortrait';
 
 const GameSetup = ({ gameState, onStartGame }) => {
   const navigate = useNavigate();
