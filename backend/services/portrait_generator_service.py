@@ -521,17 +521,24 @@ Variation #{variation_id} to ensure uniqueness."""
         gender: str
     ) -> Dict[str, str]:
         """
-        Sélectionne aléatoirement un set de calques de portrait existant
-        Si aucun n'existe, génère un portrait simple avec Pillow
+        Assemble aléatoirement des calques individuels pour créer un portrait unique
+        Utilise la bibliothèque de calques pré-générés par région/sexe
         """
         region = self.get_region_for_nationality(nationality)
         gender_param = 'male' if gender == 'M' else 'female'
         
-        available = self.get_available_portraits_for_region(region, gender_param)
+        # Essayer d'assembler des calques de la bibliothèque
+        assembled_layers = self.assemble_random_layers(region, gender_param)
         
-        if available:
-            return random.choice(available)
+        if assembled_layers and len(assembled_layers) > 0:
+            return assembled_layers
         else:
+            # Fallback : chercher des sets complets
+            available = self.get_available_portraits_for_region(region, gender_param)
+            
+            if available:
+                return random.choice(available)
+            else:
             # Générer un portrait simple à la volée
             from services.simple_portrait_generator import simple_portrait_gen
             from services.game_service import GameService
