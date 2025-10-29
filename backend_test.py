@@ -17994,7 +17994,7 @@ class BackendTester:
             print("-" * 60)
             
             game_request = {
-                "player_count": 10,
+                "player_count": 20,  # Minimum requis par l'API
                 "game_mode": "standard",
                 "selected_events": [1, 2, 3, 4],  # IDs des événements
                 "manual_players": []
