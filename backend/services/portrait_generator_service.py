@@ -577,17 +577,17 @@ Variation #{variation_id} to ensure uniqueness."""
             if available:
                 return random.choice(available)
             else:
-            # Générer un portrait simple à la volée
-            from services.simple_portrait_generator import simple_portrait_gen
-            from services.game_service import GameService
-            
-            # Obtenir des couleurs cohérentes avec la région
-            skin_color = self.get_skin_tone_for_region(region)
-            hair_color_name = self.get_hair_color_for_region(region)
-            eye_color_name = self.get_eye_color_for_region(region)
-            
-            # Convertir les noms de couleurs en hex (utiliser les palettes du GameService)
-            skin_color_hex = GameService.SKIN_COLORS[random.randint(0, len(GameService.SKIN_COLORS) - 1)]
+                # Générer un portrait simple à la volée
+                from services.simple_portrait_generator import simple_portrait_gen
+                from services.game_service import GameService
+                
+                # Obtenir des couleurs cohérentes avec la région
+                skin_color = self.get_skin_tone_for_region(region)
+                hair_color_name = self.get_hair_color_for_region(region)
+                eye_color_name = self.get_eye_color_for_region(region)
+                
+                # Convertir les noms de couleurs en hex (utiliser les palettes du GameService)
+                skin_color_hex = GameService.SKIN_COLORS[random.randint(0, len(GameService.SKIN_COLORS) - 1)]
             hair_color_hex = GameService.HAIR_COLORS[random.randint(0, len(GameService.HAIR_COLORS) - 1)]
             
             # Couleurs d'yeux en hex
