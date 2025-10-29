@@ -192,6 +192,18 @@
           agent: "main"
           comment: "✅ SERVICE FRONTEND VALIDÉ INDIRECTEMENT: Le service celebritiesService.js fonctionne parfaitement en tandem avec le backend validé. Toutes les méthodes (includeDead=false par défaut) filtrent correctement les célébrités mortes. Les tests backend confirment que les APIs utilisées par ce service retournent les bonnes données filtrées."
 
+  - task: "Diagnostic du problème des portraits par calques (ronds blancs)"
+    implemented: true
+    working: false
+    file: "components/LayeredPortrait.jsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "❌ PROBLÈME CRITIQUE IDENTIFIÉ - DIAGNOSTIC COMPLET SELON REVIEW REQUEST FRANÇAISE! Tests exhaustifs effectués révèlent la CAUSE RACINE du problème des 'ronds blancs' au lieu des portraits. RÉSULTATS: 1) **Navigation et génération**: ✅ CONFIRMÉ - Navigation vers /game-setup réussie, génération de 102 joueurs fonctionnelle. 2) **API backend fonctionnelle**: ✅ CONFIRMÉ - L'API /api/games/generate-players retourne correctement les joueurs avec tous les champs de calques (layer_base, layer_eyes, layer_hair, layer_mouth, layer_nose) au format /static/portraits/{type}/{fichier}.png. 3) **PROBLÈME CRITIQUE IDENTIFIÉ**: ❌ SERVEUR STATIQUE MAL CONFIGURÉ - Toutes les requêtes vers /static/portraits/*.png retournent HTTP 200 mais avec Content-Type: text/html; charset=utf-8 au lieu d'image/png. Le serveur sert du HTML au lieu des images PNG réelles. 4) **Conséquence directe**: Les navigateurs ne peuvent pas afficher les images car elles sont servies comme du HTML, déclenchant les onError handlers dans LayeredPortrait.jsx qui cachent les images (style.display = 'none'), laissant seulement les conteneurs vides qui apparaissent comme des ronds blancs. 5) **Frontend fonctionnel**: ✅ CONFIRMÉ - Le composant LayeredPortrait.jsx fonctionne correctement et utilise le fallback approprié. DIAGNOSTIC FINAL: Le problème n'est PAS dans le code frontend ou la génération des calques, mais dans la CONFIGURATION DU SERVEUR STATIQUE (probablement nginx/apache) qui ne sert pas correctement les fichiers PNG avec le bon Content-Type."
+
 ## metadata:
   created_by: "main_agent"
   version: "1.0"
