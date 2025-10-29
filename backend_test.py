@@ -18187,8 +18187,8 @@ class BackendTester:
                 self.log_result("Portrait Layers - Nationality Consistency", True, 
                               f"✅ Cohérence nationalité-région validée ({consistency_successes} tests)")
             
-            # Test 4: Test d'accessibilité des images (échantillon)
-            print("\n🔍 TEST 4: TEST D'ACCESSIBILITÉ DES IMAGES")
+            # Test 5: Test d'accessibilité des images (échantillon)
+            print("\n🔍 TEST 5: TEST D'ACCESSIBILITÉ DES IMAGES")
             print("-" * 60)
             
             # Tester un échantillon d'URLs de calques
