@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useCustomPlayers } from '../hooks/useCustomPlayers';
 import { PLAYER_ROLES } from '../mock/mockData';
+import LayeredPortrait from './LayeredPortrait';
 
 const CustomPlayersList = ({ onSelectPlayer, onCreateNew, selectedPlayers = [] }) => {
   const { customPlayers, removePlayer, duplicatePlayer } = useCustomPlayers();
