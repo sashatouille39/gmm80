@@ -338,6 +338,14 @@ const FinalRanking = ({ gameState }) => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       {getRankingIcon(entry.position)}
+                      
+                      {/* Portrait du joueur */}
+                      <LayeredPortrait 
+                        player={entry.player} 
+                        size="tiny"
+                        showNumber={false}
+                      />
+                      
                       <div>
                         <div className="text-white text-sm font-medium flex items-center gap-2">
                           {entry.player.is_celebrity && <Crown className="w-4 h-4 text-yellow-400" />}
