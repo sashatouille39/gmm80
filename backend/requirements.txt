@@ -38,3 +38,17 @@ tokenizers
 google-genai
 google-generativeai>=0.3.0
 stripe>=4.0.0
+multidict>=6.0.0
+distro>=1.8.0
+jiter>=0.4.0
+tqdm>=4.65.0
+pyyaml>=6.0
+markupsafe>=2.1.0
+google-ai-generativelanguage==0.6.15
+google-api-core>=2.11.0
+google-api-python-client>=2.88.0
+google-auth>=2.15.0
+protobuf>=4.23.0
+tenacity>=8.2.3
+websockets>=13.0.0
+httpcore>=0.17.0
