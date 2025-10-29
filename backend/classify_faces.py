@@ -1,13 +1,19 @@
 """
 Étape 2 : Classification automatique des visages avec DeepFace
 Analyse l'ethnicité, le genre et l'âge de chaque image téléchargée
+Version optimisée pour gérer la mémoire
 """
 import os
 import json
+import gc
 from pathlib import Path
 from tqdm import tqdm
 from deepface import DeepFace
 import cv2
+
+# Limiter l'utilisation mémoire de TensorFlow
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Réduire les logs
 
 
 class FaceClassifier:
