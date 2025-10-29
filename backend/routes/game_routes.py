@@ -294,7 +294,7 @@ async def create_game(request: GameCreateRequest):
                         gender=gender,
                         role=selected_role,
                         stats=stats,
-                        portrait=GameService._generate_portrait(nationality_key),
+                        portrait=GameService._generate_portrait(nationality_key, gender),
                         uniform=GameService._generate_uniform(),
                         alive=True,
                         health=100,
