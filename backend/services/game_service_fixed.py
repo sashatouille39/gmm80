@@ -407,8 +407,16 @@ class GameService:
         return f"{first_name} {last_name}"
     
     @classmethod
-    def _generate_portrait(cls, nationality: str) -> PlayerPortrait:
-        """Génère un portrait cohérent avec la nationalité"""
+    def _generate_portrait(cls, nationality: str, gender: str) -> PlayerPortrait:
+        """Génère un portrait cohérent avec la nationalité et le sexe en utilisant les calques IA"""
+        
+        # Utiliser le service de génération de portraits par calques
+        portrait_service = PortraitGeneratorService()
+        
+        # Obtenir les calques aléatoires cohérents avec la nationalité et le sexe
+        layers = portrait_service.select_random_portrait_layers(nationality, gender)
+        
+        # Générer aussi les propriétés de fallback pour compatibilité
         skin_color_ranges = {
             # Asie de l'Est
             'Chinoise': (2, 10),
@@ -429,7 +437,6 @@ class GameService:
             'Autrichienne': (0, 5),
             'Belge': (0, 5),
             'Française': (0, 5),
-
             'Néerlandaise': (0, 5),
             'Suisse': (0, 5),
             
@@ -444,18 +451,14 @@ class GameService:
             'Croate': (1, 7),
             'Estonienne': (0, 4),
             'Hongroise': (1, 7),
-
-
             'Polonaise': (0, 6),
             'Roumaine': (1, 7),
             'Russe': (0, 6),
             'Tchèque': (0, 6),
-
             
             # Moyen-Orient
             'Afghane': (6, 16),
             'Iranienne': (5, 15),
-
             'Turque': (4, 12),
             
             # Afrique du Nord
@@ -469,7 +472,6 @@ class GameService:
             'Indienne': (8, 18),
             'Indonésienne': (6, 16),
             'Thaïlandaise': (4, 14),
-
             
             # Amériques
             'Américaine': (0, 15),
@@ -483,13 +485,20 @@ class GameService:
         skin_range = skin_color_ranges.get(nationality, (0, 15))
         skin_color_index = random.randint(skin_range[0], min(skin_range[1], len(cls.SKIN_COLORS) - 1))
         
+        # Créer le portrait avec les calques ET les propriétés de fallback
         return PlayerPortrait(
             face_shape=random.choice(cls.FACE_SHAPES),
             skin_color=cls.SKIN_COLORS[skin_color_index],
             hairstyle=random.choice(cls.HAIRSTYLES),
             hair_color=random.choice(cls.HAIR_COLORS),
             eye_color=random.choice(['#8B4513', '#654321', '#2F4F2F', '#483D8B', '#556B2F', '#000000']),
-            eye_shape=random.choice(['Amande', 'Rond', 'Allongé', 'Tombant', 'Relevé', 'Petit', 'Grand'])
+            eye_shape=random.choice(['Amande', 'Rond', 'Allongé', 'Tombant', 'Relevé', 'Petit', 'Grand']),
+            # Ajouter les calques IA
+            layer_base=layers.get('base'),
+            layer_eyes=layers.get('eyes'),
+            layer_hair=layers.get('hair'),
+            layer_mouth=layers.get('mouth'),
+            layer_nose=layers.get('nose')
         )
     
     @classmethod
