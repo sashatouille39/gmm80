@@ -18131,8 +18131,8 @@ class BackendTester:
                 self.log_result("Portrait Layers - Layer Verification", True, 
                               f"✅ Tous les joueurs ont leurs 5 calques assignés correctement")
             
-            # Test 3: Vérification de la cohérence nationalité-région
-            print("\n🔍 TEST 3: VÉRIFICATION COHÉRENCE NATIONALITÉ-RÉGION")
+            # Test 4: Vérification de la cohérence nationalité-région
+            print("\n🔍 TEST 4: VÉRIFICATION COHÉRENCE NATIONALITÉ-RÉGION")
             print("-" * 60)
             
             nationality_region_mapping = {
