@@ -17994,17 +17994,16 @@ class BackendTester:
             print("-" * 60)
             
             game_request = {
-                "name": "Test Portraits",
-                "num_players": 10,
-                "gender_distribution": {"M": 5, "F": 5},
-                "allow_custom_players": False,
-                "events": ["athletique", "mental", "combat", "survie"]
+                "player_count": 10,
+                "game_mode": "standard",
+                "selected_events": [1, 2, 3, 4],  # IDs des événements
+                "manual_players": []
             }
             
-            print(f"   Requête: POST /api/games")
+            print(f"   Requête: POST /api/games/create")
             print(f"   Body: {json.dumps(game_request, indent=2)}")
             
-            response = requests.post(f"{API_BASE}/games", 
+            response = requests.post(f"{API_BASE}/games/create", 
                                    json=game_request, 
                                    headers={"Content-Type": "application/json"},
                                    timeout=15)
