@@ -171,7 +171,9 @@ Format: PNG with transparency"""
                     print(f"❌")
                     
             except Exception as e:
-                print(f"❌ {str(e)[:30]}")
+                print(f"❌ {str(e)[:60]}")
+                import traceback
+                traceback.print_exc()
                 continue
     
     print(f"\n✨ Yeux générés: {success_count}/{total}")
