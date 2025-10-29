@@ -124,7 +124,7 @@ Technical specifications for hair layer:
 
 async def main():
     print("\n" + "="*60)
-    print("GÉNÉRATION CHEVEUX UNIQUEMENT")
+    print("GÉNÉRATION CHEVEUX MANQUANTS")
     print("="*60)
     
     # Initialiser le service
@@ -134,20 +134,47 @@ async def main():
     os.makedirs(os.path.join(service.base_path, "hair_male"), exist_ok=True)
     os.makedirs(os.path.join(service.base_path, "hair_female"), exist_ok=True)
     
+    # Compter les fichiers existants
+    hair_male_existing = len(list(Path(service.base_path, "hair_male").glob("*.png")))
+    hair_female_existing = len(list(Path(service.base_path, "hair_female").glob("*.png")))
+    
+    print(f"\nFichiers existants:")
+    print(f"  Homme: {hair_male_existing}/100")
+    print(f"  Femme: {hair_female_existing}/100")
+    
     # Sauvegarder le PID
     with open('/tmp/portrait_hair_gen_pid.txt', 'w') as f:
         f.write(str(os.getpid()))
     
-    print(f"PID: {os.getpid()}")
+    print(f"\nPID: {os.getpid()}")
     print(f"Démarrage: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     
     start_total = time.time()
     
-    # Générer cheveux homme
-    male_ok, male_fail = await generate_hair_variations(service, "male", 100)
+    male_ok = 0
+    male_fail = 0
+    female_ok = 0
+    female_fail = 0
     
-    # Générer cheveux femme
-    female_ok, female_fail = await generate_hair_variations(service, "female", 100)
+    # Générer cheveux homme (si besoin)
+    if hair_male_existing < 100:
+        male_ok, male_fail = await generate_hair_variations(
+            service, "male", 
+            start_index=hair_male_existing + 1,
+            target_count=100
+        )
+    else:
+        print(f"\n✅ Cheveux homme déjà complets ({hair_male_existing}/100)")
+    
+    # Générer cheveux femme (si besoin)
+    if hair_female_existing < 100:
+        female_ok, female_fail = await generate_hair_variations(
+            service, "female",
+            start_index=hair_female_existing + 1,
+            target_count=100
+        )
+    else:
+        print(f"\n✅ Cheveux femme déjà complets ({hair_female_existing}/100)")
     
     # Résumé
     elapsed_total = time.time() - start_total
@@ -155,9 +182,9 @@ async def main():
     print("\n" + "="*60)
     print("GÉNÉRATION TERMINÉE")
     print("="*60)
-    print(f"Cheveux homme: {male_ok}/100 réussis, {male_fail} échecs")
-    print(f"Cheveux femme: {female_ok}/100 réussis, {female_fail} échecs")
-    print(f"Total: {male_ok + female_ok}/200 images générées")
+    print(f"Cheveux homme: {hair_male_existing + male_ok}/100 ({male_ok} générés, {male_fail} échecs)")
+    print(f"Cheveux femme: {hair_female_existing + female_ok}/100 ({female_ok} générés, {female_fail} échecs)")
+    print(f"Total généré: {male_ok + female_ok} nouvelles images")
     print(f"Temps total: {elapsed_total/60:.1f} minutes")
     if (male_ok + female_ok) > 0:
         print(f"Moyenne: {elapsed_total/(male_ok + female_ok):.1f}s par image")
