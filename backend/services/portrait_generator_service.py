@@ -384,13 +384,27 @@ Variation #{variation_id} to ensure uniqueness."""
         nationality: str,
         gender: str,
         age: int = 25,
-        set_id: int = 1
+        set_id: int = 1,
+        layer_types: List[str] = None
     ) -> Dict[str, str]:
         """
-        Génère un set complet de calques pour un portrait
+        Génère un set complet ou partiel de calques pour un portrait
+        
+        Args:
+            nationality: Nationalité du personnage
+            gender: Sexe ('male' ou 'female')
+            age: Âge du personnage
+            set_id: ID de variation pour générer différentes versions
+            layer_types: Liste des types de calques à générer ['base', 'eyes', 'hair', 'mouth', 'nose']
+                        Si None, génère tous les calques
+        
         Retourne les chemins des fichiers générés
         """
         region = self.get_region_for_nationality(nationality)
+        
+        # Si aucun type spécifié, générer tous les calques
+        if layer_types is None:
+            layer_types = ['base', 'eyes', 'hair', 'mouth', 'nose']
         
         # Déterminer la tranche d'âge
         if age < 20:
@@ -406,63 +420,59 @@ Variation #{variation_id} to ensure uniqueness."""
         gender_code = 'M' if gender == 'male' else 'F'
         base_filename = f"{region}_{gender_code}_age{age}_{set_id}"
         
-        # Générer tous les calques
-        print(f"🎨 Génération des calques pour: {nationality} ({region}), {gender}, âge {age}")
-        
+        # Générer les calques demandés
         layers = {}
         
         try:
             # Base (tête)
-            print(f"  → Génération de la base...")
-            base_bytes = await self.generate_base_layer(region, gender, age_range, set_id)
-            if base_bytes:
-                base_path = f"{self.base_path}/base/{base_filename}_base.png"
-                with open(base_path, 'wb') as f:
-                    f.write(base_bytes)
-                layers['base'] = f"/static/portraits/base/{base_filename}_base.png"
-                print(f"  ✅ Base générée")
+            if 'base' in layer_types:
+                base_bytes = await self.generate_base_layer(region, gender, age_range, set_id)
+                if base_bytes:
+                    os.makedirs(f"{self.base_path}/base", exist_ok=True)
+                    base_path = f"{self.base_path}/base/{base_filename}_base.png"
+                    with open(base_path, 'wb') as f:
+                        f.write(base_bytes)
+                    layers['base'] = f"/static/portraits/base/{base_filename}_base.png"
             
             # Yeux
-            print(f"  → Génération des yeux...")
-            eyes_bytes = await self.generate_eyes_layer(region, gender, age_range, set_id)
-            if eyes_bytes:
-                eyes_path = f"{self.base_path}/eyes/{base_filename}_eyes.png"
-                with open(eyes_path, 'wb') as f:
-                    f.write(eyes_bytes)
-                layers['eyes'] = f"/static/portraits/eyes/{base_filename}_eyes.png"
-                print(f"  ✅ Yeux générés")
+            if 'eyes' in layer_types:
+                eyes_bytes = await self.generate_eyes_layer(region, gender, age_range, set_id)
+                if eyes_bytes:
+                    os.makedirs(f"{self.base_path}/eyes", exist_ok=True)
+                    eyes_path = f"{self.base_path}/eyes/{base_filename}_eyes.png"
+                    with open(eyes_path, 'wb') as f:
+                        f.write(eyes_bytes)
+                    layers['eyes'] = f"/static/portraits/eyes/{base_filename}_eyes.png"
             
             # Cheveux
-            print(f"  → Génération des cheveux...")
-            hair_bytes = await self.generate_hair_layer(region, gender, age_range, set_id)
-            if hair_bytes:
-                hair_path = f"{self.base_path}/hair/{base_filename}_hair.png"
-                with open(hair_path, 'wb') as f:
-                    f.write(hair_bytes)
-                layers['hair'] = f"/static/portraits/hair/{base_filename}_hair.png"
-                print(f"  ✅ Cheveux générés")
+            if 'hair' in layer_types:
+                hair_bytes = await self.generate_hair_layer(region, gender, age_range, set_id)
+                if hair_bytes:
+                    os.makedirs(f"{self.base_path}/hair", exist_ok=True)
+                    hair_path = f"{self.base_path}/hair/{base_filename}_hair.png"
+                    with open(hair_path, 'wb') as f:
+                        f.write(hair_bytes)
+                    layers['hair'] = f"/static/portraits/hair/{base_filename}_hair.png"
             
             # Bouche
-            print(f"  → Génération de la bouche...")
-            mouth_bytes = await self.generate_mouth_layer(region, gender, age_range, set_id)
-            if mouth_bytes:
-                mouth_path = f"{self.base_path}/mouth/{base_filename}_mouth.png"
-                with open(mouth_path, 'wb') as f:
-                    f.write(mouth_bytes)
-                layers['mouth'] = f"/static/portraits/mouth/{base_filename}_mouth.png"
-                print(f"  ✅ Bouche générée")
+            if 'mouth' in layer_types:
+                mouth_bytes = await self.generate_mouth_layer(region, gender, age_range, set_id)
+                if mouth_bytes:
+                    os.makedirs(f"{self.base_path}/mouth", exist_ok=True)
+                    mouth_path = f"{self.base_path}/mouth/{base_filename}_mouth.png"
+                    with open(mouth_path, 'wb') as f:
+                        f.write(mouth_bytes)
+                    layers['mouth'] = f"/static/portraits/mouth/{base_filename}_mouth.png"
             
             # Nez
-            print(f"  → Génération du nez...")
-            nose_bytes = await self.generate_nose_layer(region, gender, age_range, set_id)
-            if nose_bytes:
-                nose_path = f"{self.base_path}/nose/{base_filename}_nose.png"
-                with open(nose_path, 'wb') as f:
-                    f.write(nose_bytes)
-                layers['nose'] = f"/static/portraits/nose/{base_filename}_nose.png"
-                print(f"  ✅ Nez généré")
-            
-            print(f"✅ Portrait complet généré: {len(layers)} calques")
+            if 'nose' in layer_types:
+                nose_bytes = await self.generate_nose_layer(region, gender, age_range, set_id)
+                if nose_bytes:
+                    os.makedirs(f"{self.base_path}/nose", exist_ok=True)
+                    nose_path = f"{self.base_path}/nose/{base_filename}_nose.png"
+                    with open(nose_path, 'wb') as f:
+                        f.write(nose_bytes)
+                    layers['nose'] = f"/static/portraits/nose/{base_filename}_nose.png"
             
         except Exception as e:
             print(f"❌ Erreur lors de la génération: {str(e)}")
