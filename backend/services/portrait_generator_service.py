@@ -588,37 +588,37 @@ Variation #{variation_id} to ensure uniqueness."""
                 
                 # Convertir les noms de couleurs en hex (utiliser les palettes du GameService)
                 skin_color_hex = GameService.SKIN_COLORS[random.randint(0, len(GameService.SKIN_COLORS) - 1)]
-            hair_color_hex = GameService.HAIR_COLORS[random.randint(0, len(GameService.HAIR_COLORS) - 1)]
-            
-            # Couleurs d'yeux en hex
-            eye_colors_hex = {
-                'blue': '#4169E1',
-                'light blue': '#87CEEB',
-                'grey-blue': '#6495ED',
-                'green': '#228B22',
-                'brown': '#8B4513',
-                'dark brown': '#654321',
-                'hazel': '#8E7618',
-                'light brown': '#A0522D',
-                'black': '#000000',
-                'grey': '#808080'
-            }
-            eye_color_hex = eye_colors_hex.get(eye_color_name, '#8B4513')
-            
-            # Générer le portrait simple
-            set_id = random.randint(1, 9999)
-            layers = simple_portrait_gen.generate_complete_portrait(
-                nationality=nationality,
-                region=region,
-                gender=gender,
-                skin_color=skin_color_hex,
-                hair_color=hair_color_hex,
-                eye_color=eye_color_hex,
-                eye_shape='Amande',
-                set_id=set_id
-            )
-            
-            return layers
+                hair_color_hex = GameService.HAIR_COLORS[random.randint(0, len(GameService.HAIR_COLORS) - 1)]
+                
+                # Couleurs d'yeux en hex
+                eye_colors_hex = {
+                    'blue': '#4169E1',
+                    'light blue': '#87CEEB',
+                    'grey-blue': '#6495ED',
+                    'green': '#228B22',
+                    'brown': '#8B4513',
+                    'dark brown': '#654321',
+                    'hazel': '#8E7618',
+                    'light brown': '#A0522D',
+                    'black': '#000000',
+                    'grey': '#808080'
+                }
+                eye_color_hex = eye_colors_hex.get(eye_color_name, '#8B4513')
+                
+                # Générer le portrait simple
+                set_id = random.randint(1, 9999)
+                layers = simple_portrait_gen.generate_complete_portrait(
+                    nationality=nationality,
+                    region=region,
+                    gender=gender,
+                    skin_color=skin_color_hex,
+                    hair_color=hair_color_hex,
+                    eye_color=eye_color_hex,
+                    eye_shape='Amande',
+                    set_id=set_id
+                )
+                
+                return layers
 
 
 # Instance globale du service
