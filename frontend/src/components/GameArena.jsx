@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Progress } from './ui/progress';
 import { Badge } from './ui/badge';
 import EliminatedPlayersModal from './EliminatedPlayersModal';
+import LayeredPortrait from './LayeredPortrait';
 import { 
   Play, 
   Pause, 
