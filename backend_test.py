@@ -18026,9 +18026,9 @@ class BackendTester:
             
             players = game_data['players']
             
-            if len(players) != 10:
+            if len(players) != 20:
                 self.log_result("Portrait Layers - Game Creation", False, 
-                              f"❌ Nombre de joueurs incorrect - attendu: 10, obtenu: {len(players)}")
+                              f"❌ Nombre de joueurs incorrect - attendu: 20, obtenu: {len(players)}")
                 return
             
             self.log_result("Portrait Layers - Game Creation", True, 
