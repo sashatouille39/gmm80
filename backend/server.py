@@ -31,6 +31,20 @@ db = client[os.environ['DB_NAME']]
 # Create the main app without a prefix
 app = FastAPI(title="Game Master Manager API", version="1.0.0")
 
+# Add CORS middleware FIRST
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Mount static files BEFORE routers (important for FastAPI routing)
+static_path = Path(__file__).parent / "static"
+static_path.mkdir(exist_ok=True)
+app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
+
 # Create a router with the /api prefix for basic routes
 api_router = APIRouter(prefix="/api")
 
@@ -69,19 +83,6 @@ app.include_router(vip_router)
 app.include_router(group_router)
 app.include_router(statistics_router)
 app.include_router(portrait_router)
-
-# Mount static files for portrait layers
-static_path = Path(__file__).parent / "static"
-static_path.mkdir(exist_ok=True)
-app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 # Configure logging
 logging.basicConfig(
