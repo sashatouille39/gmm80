@@ -17989,8 +17989,35 @@ class BackendTester:
             print("générés ont bien leurs calques de portraits assignés selon leur nationalité.")
             print()
             
-            # Test 1: Création de partie selon les spécifications exactes
-            print("🔍 TEST 1: CRÉATION DE PARTIE AVEC PARAMÈTRES SPÉCIFIQUES")
+            # Test 1: Vérifier et ajuster les fonds si nécessaire
+            print("🔍 TEST 1: VÉRIFICATION ET AJUSTEMENT DES FONDS")
+            print("-" * 60)
+            
+            # Vérifier le gamestate actuel
+            gamestate_response = requests.get(f"{API_BASE}/gamestate/", timeout=5)
+            if gamestate_response.status_code == 200:
+                gamestate = gamestate_response.json()
+                current_money = gamestate.get('money', 0)
+                print(f"   Argent actuel: {current_money:,}$")
+                
+                # Si pas assez d'argent, en ajouter
+                if current_money < 200000:  # Besoin d'au moins 200k pour créer une partie
+                    new_money = 1000000  # 1 million
+                    update_response = requests.put(f"{API_BASE}/gamestate/", 
+                                                 json={"money": new_money},
+                                                 headers={"Content-Type": "application/json"},
+                                                 timeout=5)
+                    if update_response.status_code == 200:
+                        print(f"   ✅ Argent mis à jour: {new_money:,}$")
+                    else:
+                        print(f"   ⚠️ Échec mise à jour argent: HTTP {update_response.status_code}")
+                else:
+                    print(f"   ✅ Fonds suffisants: {current_money:,}$")
+            else:
+                print(f"   ⚠️ Impossible de vérifier le gamestate: HTTP {gamestate_response.status_code}")
+            
+            # Test 2: Création de partie selon les spécifications exactes
+            print("\n🔍 TEST 2: CRÉATION DE PARTIE AVEC PARAMÈTRES SPÉCIFIQUES")
             print("-" * 60)
             
             game_request = {
