@@ -56,3 +56,4 @@ attrs
 yarl
 aiohttp
 propcache
+aiohappyeyeballs
