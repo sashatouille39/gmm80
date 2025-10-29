@@ -152,12 +152,12 @@ class PortraitGeneratorService:
         
         # Amérique Latine
         'Argentin': 'latino',
+        'Brésilien': 'latino',
         'Mexicain': 'latino',
         
         # Mixte
         'Américain': 'mixed',
         'Australien': 'mixed',
-        'Brésilien': 'mixed',
         'Canadien': 'mixed',
     }
     
