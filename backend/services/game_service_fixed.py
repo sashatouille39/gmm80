@@ -101,7 +101,7 @@ class GameService:
             gender=gender,
             role=selected_role,
             stats=stats,
-            portrait=cls._generate_portrait(nationality),
+            portrait=cls._generate_portrait(nationality, gender),
             uniform=cls._generate_uniform()
         )
     
