@@ -53,3 +53,5 @@ tenacity>=8.2.3
 websockets>=13.0.0
 httpcore>=0.17.0
 attrs
+yarl
+aiohttp
