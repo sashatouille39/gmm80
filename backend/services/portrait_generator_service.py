@@ -515,6 +515,44 @@ Variation #{variation_id} to ensure uniqueness."""
         
         return available
     
+    def assemble_random_layers(
+        self,
+        region: str,
+        gender: str
+    ) -> Dict[str, str]:
+        """
+        Assemble aléatoirement des calques individuels de la bibliothèque
+        pour créer un portrait unique
+        
+        Retourne un dict avec les chemins des calques assemblés :
+        {'base': '/path/to/base.png', 'eyes': '/path/to/eyes.png', ...}
+        """
+        assembled = {}
+        layer_types = ['base', 'eyes', 'hair', 'mouth', 'nose']
+        
+        gender_code = 'M' if gender == 'male' else 'F'
+        
+        # Pour chaque type de calque, sélectionner un fichier aléatoire
+        for layer_type in layer_types:
+            layer_dir = f"{self.base_path}/{layer_type}"
+            
+            if not os.path.exists(layer_dir):
+                continue
+            
+            # Trouver tous les fichiers de ce type pour cette région/sexe
+            pattern_prefix = f"{region}_{gender_code}_"
+            matching_files = [
+                f for f in os.listdir(layer_dir)
+                if f.startswith(pattern_prefix) and f.endswith(f'_{layer_type}.png')
+            ]
+            
+            if matching_files:
+                # Choisir un fichier aléatoire
+                chosen_file = random.choice(matching_files)
+                assembled[layer_type] = f"/static/portraits/{layer_type}/{chosen_file}"
+        
+        return assembled
+    
     def select_random_portrait_layers(
         self,
         nationality: str,
