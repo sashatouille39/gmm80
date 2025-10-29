@@ -118,6 +118,19 @@
 ## user_problem_statement: "Générateur de portraits par calques cohérents avec la nationalité. Le système doit générer des calques PNG (base/yeux/cheveux/bouche/nez) via IA (gpt-image-1) avec palettes de couleurs par continent (nordique, méditerranéen, africain, asiatique, etc.). Générer des dizaines de coupes de cheveux pour fille et garçon. Les calques doivent se superposer dans le frontend pour créer un portrait complet selon nationalité et sexe du personnage. Les portraits doivent apparaître dans le jeu quand les joueurs sont générés."
 
 ## backend:
+  - task: "Génération de bibliothèque personnalisée de calques IA pour portraits"
+    implemented: true
+    working: "in_progress"
+    file: "scripts/generate_custom_library.py, services/portrait_generator_service.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "in_progress"
+          agent: "main"
+          comment: "🎨 GÉNÉRATION EN COURS: Script personnalisé créé selon spécifications exactes de l'utilisateur: 200 coupes cheveux (100 homme + 100 femme), 10 nez, 10 bouches, 18 yeux (3 formes × 6 couleurs), 10 teintes peau (brun foncé à beige clair). Total: 248 calques IA à générer = ~600,000 combinaisons possibles. Utilise gpt-image-1 via EMERGENT_LLM_KEY. Test IA réussi (1.4MB par image vs 1.5KB fallback Pillow). Génération lancée en background (PID 1323), progression: 2/248 bases générées. Estimation: ~1 heure pour complétion. Le système d'assemblage aléatoire est déjà complètement implémenté et fonctionnel dans portrait_generator_service.py, il attend juste les vrais calques IA. Monitoring disponible via scripts/monitor_generation.sh."
+
+## backend:
   - task: "Système de mortalité des célébrités et remplacement automatique"
     implemented: true
     working: true
