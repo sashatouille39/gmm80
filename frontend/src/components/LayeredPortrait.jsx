@@ -46,7 +46,7 @@ const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber =
 
   // Affichage avec calques superposés
   return (
-    <div className={`${sizeClass} ${className} relative overflow-hidden`}>
+    <div className={`${sizeClass} ${className} relative overflow-hidden rounded-full bg-gray-100`}>
       {/* Conteneur pour les calques avec position relative */}
       <div className="relative w-full h-full">
         {/* Calque 1: Base (tête avec peau) */}
@@ -54,7 +54,7 @@ const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber =
           <img
             src={`${backendUrl}${player.portrait.layer_base}`}
             alt="Base"
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-contain"
             style={{ zIndex: 1 }}
             onError={(e) => {
               e.target.style.display = 'none';
@@ -67,7 +67,7 @@ const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber =
           <img
             src={`${backendUrl}${player.portrait.layer_nose}`}
             alt="Nez"
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-contain"
             style={{ zIndex: 2 }}
             onError={(e) => {
               e.target.style.display = 'none';
@@ -80,7 +80,7 @@ const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber =
           <img
             src={`${backendUrl}${player.portrait.layer_mouth}`}
             alt="Bouche"
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-contain"
             style={{ zIndex: 3 }}
             onError={(e) => {
               e.target.style.display = 'none';
@@ -93,7 +93,7 @@ const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber =
           <img
             src={`${backendUrl}${player.portrait.layer_eyes}`}
             alt="Yeux"
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-contain"
             style={{ zIndex: 4 }}
             onError={(e) => {
               e.target.style.display = 'none';
@@ -106,7 +106,7 @@ const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber =
           <img
             src={`${backendUrl}${player.portrait.layer_hair}`}
             alt="Cheveux"
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-contain"
             style={{ zIndex: 5 }}
             onError={(e) => {
               e.target.style.display = 'none';
