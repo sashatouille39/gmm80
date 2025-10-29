@@ -150,11 +150,9 @@ Quality: High detail with realistic iris texture
 Expression: Neutral, friendly
 Format: PNG with transparency"""
 
-                images = await service.image_gen.generate_image(
+                images = await service.image_gen.generate_images(
                     prompt=prompt,
                     model="gpt-image-1",
-                    size="1024x1024",
-                    quality="standard",
                     number_of_images=1
                 )
                 
