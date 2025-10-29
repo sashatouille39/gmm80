@@ -116,7 +116,7 @@ Technical specifications for hair layer:
     
     return generated, failed
 
-def main():
+async def main():
     print("\n" + "="*60)
     print("GÉNÉRATION CHEVEUX UNIQUEMENT")
     print("="*60)
@@ -125,8 +125,8 @@ def main():
     service = PortraitGeneratorService()
     
     # Créer les dossiers si nécessaire
-    os.makedirs("static/portraits/hair_male", exist_ok=True)
-    os.makedirs("static/portraits/hair_female", exist_ok=True)
+    os.makedirs(os.path.join(service.base_path, "hair_male"), exist_ok=True)
+    os.makedirs(os.path.join(service.base_path, "hair_female"), exist_ok=True)
     
     # Sauvegarder le PID
     with open('/tmp/portrait_hair_gen_pid.txt', 'w') as f:
@@ -138,10 +138,10 @@ def main():
     start_total = time.time()
     
     # Générer cheveux homme
-    male_ok, male_fail = generate_hair_variations(service, "male", 100)
+    male_ok, male_fail = await generate_hair_variations(service, "male", 100)
     
     # Générer cheveux femme
-    female_ok, female_fail = generate_hair_variations(service, "female", 100)
+    female_ok, female_fail = await generate_hair_variations(service, "female", 100)
     
     # Résumé
     elapsed_total = time.time() - start_total
@@ -153,7 +153,8 @@ def main():
     print(f"Cheveux femme: {female_ok}/100 réussis, {female_fail} échecs")
     print(f"Total: {male_ok + female_ok}/200 images générées")
     print(f"Temps total: {elapsed_total/60:.1f} minutes")
-    print(f"Moyenne: {elapsed_total/(male_ok + female_ok):.1f}s par image")
+    if (male_ok + female_ok) > 0:
+        print(f"Moyenne: {elapsed_total/(male_ok + female_ok):.1f}s par image")
     
     # Nettoyer le PID
     try:
@@ -162,4 +163,4 @@ def main():
         pass
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
