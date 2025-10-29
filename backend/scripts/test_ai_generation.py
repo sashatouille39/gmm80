@@ -33,11 +33,9 @@ async def test_image_generation():
         
         image_gen = OpenAIImageGeneration(api_key=api_key)
         
-        images = await image_gen.generate_image(
+        images = await image_gen.generate_images(
             prompt="A simple red circle on transparent background, PNG format",
             model="gpt-image-1",
-            size="1024x1024",
-            quality="standard",
             number_of_images=1
         )
         
