@@ -57,3 +57,8 @@ yarl
 aiohttp
 propcache
 aiohappyeyeballs
+aiosignal
+frozenlist
+aiodns
+Brotli
+backports.zstd
