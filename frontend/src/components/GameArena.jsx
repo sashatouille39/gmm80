@@ -1276,11 +1276,12 @@ const GameArena = ({ currentGame, setCurrentGame, gameState, updateGameState, on
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                          player.alive ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
-                        }`}>
-                          {player.number}
-                        </div>
+                        {/* Portrait en calques */}
+                        <LayeredPortrait 
+                          player={player} 
+                          size="tiny" 
+                          showNumber={true}
+                        />
                         <div>
                           <div className="text-white text-sm font-medium flex items-center gap-2">
                             {player.name}
