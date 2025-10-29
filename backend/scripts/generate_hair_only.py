@@ -59,9 +59,11 @@ async def generate_hair_variations(service, gender: str, start_index: int = 1, t
     failed = 0
     
     for i in range(start_index, target_count + 1):
-        # Sélection du style et couleur
-        style = styles[i % len(styles)]
-        color = HAIR_COLORS[i % len(HAIR_COLORS)]
+        # Sélection du style et couleur (cyclique sur les listes)
+        style_idx = (i - 1) % len(styles)
+        color_idx = (i - 1) % len(HAIR_COLORS)
+        style = styles[style_idx]
+        color = HAIR_COLORS[color_idx]
         
         # Construire le prompt
         age_range = "20-40" if gender == "male" else "18-35"
@@ -80,10 +82,11 @@ Technical specifications for hair layer:
 - Format: Clean hair silhouette ready for layering
 - Resolution: High quality, suitable for portrait composition"""
         
-        filename = f"hair_{gender}_{i+1}.png"
+        filename = f"hair_{gender}_{i}.png"
+        current = i - start_index + 1
         
         try:
-            print(f"[{i+1}/{count}] Génération: {style} {color}...", end=" ", flush=True)
+            print(f"[{i}/{target_count}] Génération: {style} {color}...", end=" ", flush=True)
             start = time.time()
             
             # Générer l'image (méthode async)
@@ -111,8 +114,8 @@ Technical specifications for hair layer:
             print(f"❌ Erreur: {str(e)}")
             
         # Pause entre générations pour éviter rate limits
-        if (i + 1) % 10 == 0:
-            print(f"\n⏸️  Pause 5s (progression: {generated}/{count})...\n")
+        if current % 10 == 0:
+            print(f"\n⏸️  Pause 5s (progression: {generated}/{count_to_generate})...\n")
             await asyncio.sleep(5)
         else:
             await asyncio.sleep(1)
