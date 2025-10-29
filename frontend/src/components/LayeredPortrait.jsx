@@ -4,7 +4,7 @@ import React from 'react';
  * Composant pour afficher un portrait composé de calques PNG superposés
  * Les calques sont générés par IA et cohérents avec la nationalité et le sexe
  */
-const LayeredPortrait = ({ player, size = 'medium', className = '' }) => {
+const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber = false }) => {
   // Si pas de calques disponibles, afficher le portrait simple
   const hasLayers = player?.portrait?.layer_base || 
                     player?.portrait?.layer_eyes ||
@@ -14,6 +14,7 @@ const LayeredPortrait = ({ player, size = 'medium', className = '' }) => {
 
   // Tailles prédéfinies
   const sizes = {
+    tiny: 'w-8 h-8',
     small: 'w-12 h-12',
     medium: 'w-20 h-20',
     large: 'w-32 h-32',
@@ -26,21 +27,18 @@ const LayeredPortrait = ({ player, size = 'medium', className = '' }) => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL || '';
 
   if (!hasLayers) {
-    // Affichage fallback avec le style simple
+    // Affichage fallback avec le style simple (numéro dans un cercle)
     return (
-      <div className={`${sizeClass} ${className} relative`}>
+      <div className={`${sizeClass} ${className} relative flex items-center justify-center`}>
         <div 
-          className="w-full h-full rounded-full"
-          style={{ backgroundColor: player?.portrait?.skin_color || '#F5CBA7' }}
+          className={`w-full h-full rounded-full flex items-center justify-center text-white font-bold ${
+            player?.alive === false ? 'bg-red-600' : 'bg-blue-600'
+          }`}
+          style={{ 
+            fontSize: size === 'tiny' ? '0.625rem' : size === 'small' ? '0.75rem' : '1rem'
+          }}
         >
-          {/* Yeux simples */}
-          <div className="absolute top-1/3 left-1/4 w-2 h-2 rounded-full bg-gray-800"></div>
-          <div className="absolute top-1/3 right-1/4 w-2 h-2 rounded-full bg-gray-800"></div>
-          {/* Cheveux simples */}
-          <div 
-            className="absolute top-0 left-0 w-full h-1/2 rounded-t-full opacity-80"
-            style={{ backgroundColor: player?.portrait?.hair_color || '#4A4A4A' }}
-          ></div>
+          {showNumber && player?.number ? player.number : '?'}
         </div>
       </div>
     );
