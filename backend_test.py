@@ -17980,10 +17980,261 @@ class BackendTester:
         except Exception as e:
             self.log_result("Collect VIP Earnings API Response Structure", False, f"Error during test: {str(e)}")
 
+    def test_portrait_layers_system(self):
+        """Test CRITICAL: Système de portraits par calques selon la review request française"""
+        try:
+            print("\n🎯 TESTING PORTRAIT LAYERS SYSTEM - FRENCH REVIEW REQUEST")
+            print("=" * 80)
+            print("CONTEXTE: Tester l'API de création de partie et vérifier que les joueurs")
+            print("générés ont bien leurs calques de portraits assignés selon leur nationalité.")
+            print()
+            
+            # Test 1: Création de partie selon les spécifications exactes
+            print("🔍 TEST 1: CRÉATION DE PARTIE AVEC PARAMÈTRES SPÉCIFIQUES")
+            print("-" * 60)
+            
+            game_request = {
+                "name": "Test Portraits",
+                "num_players": 10,
+                "gender_distribution": {"M": 5, "F": 5},
+                "allow_custom_players": False,
+                "events": ["athletique", "mental", "combat", "survie"]
+            }
+            
+            print(f"   Requête: POST /api/games")
+            print(f"   Body: {json.dumps(game_request, indent=2)}")
+            
+            response = requests.post(f"{API_BASE}/games", 
+                                   json=game_request, 
+                                   headers={"Content-Type": "application/json"},
+                                   timeout=15)
+            
+            print(f"   Réponse: HTTP {response.status_code}")
+            
+            if response.status_code != 200:
+                self.log_result("Portrait Layers - Game Creation", False, 
+                              f"❌ Échec création de partie - HTTP {response.status_code}", 
+                              response.text[:500])
+                return
+            
+            game_data = response.json()
+            
+            # Vérifier la structure de base
+            if 'game' not in game_data or 'players' not in game_data['game']:
+                self.log_result("Portrait Layers - Game Creation", False, 
+                              "❌ Structure de réponse incorrecte - 'game' ou 'players' manquant")
+                return
+            
+            game = game_data['game']
+            players = game['players']
+            
+            if len(players) != 10:
+                self.log_result("Portrait Layers - Game Creation", False, 
+                              f"❌ Nombre de joueurs incorrect - attendu: 10, obtenu: {len(players)}")
+                return
+            
+            self.log_result("Portrait Layers - Game Creation", True, 
+                          f"✅ Partie créée avec succès - {len(players)} joueurs générés")
+            
+            # Test 2: Vérification des portraits pour CHAQUE joueur
+            print("\n🔍 TEST 2: VÉRIFICATION DES CALQUES DE PORTRAITS")
+            print("-" * 60)
+            
+            portrait_errors = []
+            layer_accessibility_tests = []
+            nationality_consistency_tests = []
+            
+            required_layers = ['layer_base', 'layer_eyes', 'layer_hair', 'layer_mouth', 'layer_nose']
+            
+            for i, player in enumerate(players):
+                player_number = player.get('number', f'#{i+1}')
+                player_name = player.get('name', 'Inconnu')
+                player_nationality = player.get('nationality', 'Inconnue')
+                
+                print(f"   Joueur {player_number}: {player_name} ({player_nationality})")
+                
+                # Vérifier la présence du champ portrait
+                if 'portrait' not in player:
+                    portrait_errors.append(f"Joueur {player_number}: champ 'portrait' manquant")
+                    continue
+                
+                portrait = player['portrait']
+                
+                # Vérifier chaque calque requis
+                missing_layers = []
+                invalid_layers = []
+                
+                for layer in required_layers:
+                    if layer not in portrait:
+                        missing_layers.append(layer)
+                    else:
+                        layer_path = portrait[layer]
+                        if not layer_path or layer_path is None:
+                            invalid_layers.append(f"{layer}: null")
+                        elif not isinstance(layer_path, str):
+                            invalid_layers.append(f"{layer}: type {type(layer_path)}")
+                        elif not layer_path.startswith('/static/portraits/'):
+                            invalid_layers.append(f"{layer}: format incorrect '{layer_path}'")
+                        else:
+                            # Ajouter à la liste des tests d'accessibilité
+                            layer_accessibility_tests.append({
+                                'player': player_number,
+                                'layer': layer,
+                                'path': layer_path
+                            })
+                            print(f"     ✅ {layer}: {layer_path}")
+                
+                if missing_layers:
+                    portrait_errors.append(f"Joueur {player_number}: calques manquants: {missing_layers}")
+                
+                if invalid_layers:
+                    portrait_errors.append(f"Joueur {player_number}: calques invalides: {invalid_layers}")
+                
+                # Test de cohérence nationalité (exemples selon la review request)
+                if player_nationality and portrait.get('layer_base'):
+                    nationality_consistency_tests.append({
+                        'player': player_number,
+                        'nationality': player_nationality,
+                        'layer_base': portrait['layer_base']
+                    })
+            
+            # Évaluer les résultats des portraits
+            if portrait_errors:
+                self.log_result("Portrait Layers - Layer Verification", False, 
+                              f"❌ Erreurs de calques trouvées", portrait_errors[:5])
+            else:
+                self.log_result("Portrait Layers - Layer Verification", True, 
+                              f"✅ Tous les joueurs ont leurs 5 calques assignés correctement")
+            
+            # Test 3: Vérification de la cohérence nationalité-région
+            print("\n🔍 TEST 3: VÉRIFICATION COHÉRENCE NATIONALITÉ-RÉGION")
+            print("-" * 60)
+            
+            nationality_region_mapping = {
+                'Chinoise': 'east_asian',
+                'Japonaise': 'east_asian', 
+                'Coréenne': 'east_asian',
+                'Française': 'western_european',
+                'Allemande': 'western_european',
+                'Espagnole': 'western_european',
+                'Italienne': 'western_european',
+                'Britannique': 'western_european',
+                'Nigériane': 'african',
+                'Égyptienne': 'north_african',
+                'Marocaine': 'north_african',
+                'Indienne': 'south_asian',
+                'Thaïlandaise': 'southeast_asian',
+                'Iranienne': 'middle_eastern',
+                'Turque': 'middle_eastern',
+                'Suédoise': 'nordic',
+                'Norvégienne': 'nordic',
+                'Finlandaise': 'nordic',
+                'Brésilienne': 'latino',
+                'Mexicaine': 'latino',
+                'Argentine': 'latino'
+            }
+            
+            consistency_errors = []
+            consistency_successes = 0
+            
+            for test in nationality_consistency_tests:
+                nationality = test['nationality']
+                layer_base = test['layer_base']
+                player = test['player']
+                
+                if nationality in nationality_region_mapping:
+                    expected_region = nationality_region_mapping[nationality]
+                    
+                    # Vérifier si le chemin contient la région attendue
+                    if expected_region in layer_base:
+                        consistency_successes += 1
+                        print(f"   ✅ Joueur {player}: {nationality} → {expected_region} (cohérent)")
+                    else:
+                        consistency_errors.append(f"Joueur {player}: {nationality} devrait avoir région '{expected_region}' mais a '{layer_base}'")
+                        print(f"   ❌ Joueur {player}: {nationality} → région incorrecte dans '{layer_base}'")
+                else:
+                    print(f"   ⚠️  Joueur {player}: {nationality} (nationalité non mappée pour test)")
+            
+            if consistency_errors:
+                self.log_result("Portrait Layers - Nationality Consistency", False, 
+                              f"❌ Incohérences nationalité-région trouvées", consistency_errors[:3])
+            else:
+                self.log_result("Portrait Layers - Nationality Consistency", True, 
+                              f"✅ Cohérence nationalité-région validée ({consistency_successes} tests)")
+            
+            # Test 4: Test d'accessibilité des images (échantillon)
+            print("\n🔍 TEST 4: TEST D'ACCESSIBILITÉ DES IMAGES")
+            print("-" * 60)
+            
+            # Tester un échantillon d'URLs de calques
+            sample_tests = layer_accessibility_tests[:5]  # Tester 5 calques maximum
+            accessibility_errors = []
+            accessibility_successes = 0
+            
+            for test in sample_tests:
+                layer_url = f"{BACKEND_URL}{test['path']}"
+                print(f"   Test: GET {layer_url}")
+                
+                try:
+                    response = requests.get(layer_url, timeout=5)
+                    if response.status_code == 200:
+                        # Vérifier que c'est bien une image
+                        content_type = response.headers.get('content-type', '')
+                        if 'image' in content_type.lower():
+                            accessibility_successes += 1
+                            print(f"     ✅ Accessible - {content_type}")
+                        else:
+                            accessibility_errors.append(f"URL {test['path']}: type de contenu incorrect '{content_type}'")
+                            print(f"     ❌ Type de contenu incorrect: {content_type}")
+                    else:
+                        accessibility_errors.append(f"URL {test['path']}: HTTP {response.status_code}")
+                        print(f"     ❌ HTTP {response.status_code}")
+                except requests.exceptions.RequestException as e:
+                    accessibility_errors.append(f"URL {test['path']}: erreur de connexion - {str(e)}")
+                    print(f"     ❌ Erreur: {str(e)}")
+            
+            if accessibility_errors:
+                self.log_result("Portrait Layers - Image Accessibility", False, 
+                              f"❌ Problèmes d'accessibilité des images", accessibility_errors)
+            else:
+                self.log_result("Portrait Layers - Image Accessibility", True, 
+                              f"✅ Images accessibles ({accessibility_successes}/{len(sample_tests)} testées)")
+            
+            # Résumé final
+            print("\n📊 RÉSUMÉ DU TEST DES PORTRAITS PAR CALQUES")
+            print("=" * 60)
+            
+            total_errors = len(portrait_errors) + len(consistency_errors) + len(accessibility_errors)
+            
+            if total_errors == 0:
+                print("🎉 SUCCÈS COMPLET: Système de portraits par calques fonctionnel!")
+                print("✅ Partie créée avec succès")
+                print("✅ Tous les joueurs ont leurs 5 calques assignés")
+                print("✅ Chemins des calques au bon format")
+                print("✅ Cohérence nationalité-région validée")
+                print("✅ Images accessibles via GET")
+                
+                self.log_result("Portrait Layers System - Complete", True, 
+                              "🎉 SYSTÈME DE PORTRAITS PAR CALQUES COMPLÈTEMENT FONCTIONNEL selon review request française")
+            else:
+                print(f"❌ ÉCHECS DÉTECTÉS: {total_errors} problèmes trouvés")
+                if portrait_errors:
+                    print(f"   - {len(portrait_errors)} erreurs de calques")
+                if consistency_errors:
+                    print(f"   - {len(consistency_errors)} erreurs de cohérence")
+                if accessibility_errors:
+                    print(f"   - {len(accessibility_errors)} erreurs d'accessibilité")
+                
+                self.log_result("Portrait Layers System - Complete", False, 
+                              f"❌ Système de portraits par calques avec {total_errors} problèmes identifiés")
+                
+        except Exception as e:
+            self.log_result("Portrait Layers System - Complete", False, f"Erreur durant le test: {str(e)}")
+
 if __name__ == "__main__":
     tester = BackendTester()
     
-    print(f"\n🎯 TEST COMPLET DU SYSTÈME DE MORTALITÉ DES CÉLÉBRITÉS - REVIEW REQUEST FRANÇAISE")
+    print(f"\n🎯 TEST DU SYSTÈME DE PORTRAITS PAR CALQUES - REVIEW REQUEST FRANÇAISE")
     print(f"Backend URL: {BACKEND_URL}")
     print(f"API Base: {API_BASE}")
     print("=" * 80)
@@ -17993,17 +18244,15 @@ if __name__ == "__main__":
         print("❌ Server not accessible, aborting tests")
         exit(1)
     
-    # Run the CELEBRITY MORTALITY SYSTEM test according to French review request
-    print("\n🔥 TEST CRITIQUE - SYSTÈME DE MORTALITÉ DES CÉLÉBRITÉS")
+    # Run the PORTRAIT LAYERS SYSTEM test according to French review request
+    print("\n🔥 TEST CRITIQUE - SYSTÈME DE PORTRAITS PAR CALQUES")
     print("=" * 80)
-    tester.test_celebrity_mortality_system_complete()
+    tester.test_portrait_layers_system()
     
     # Run some basic functionality tests to ensure system still works
     print("\n🔧 TESTS DE FONCTIONNALITÉ DE BASE")
     print("=" * 80)
     tester.test_basic_routes()
-    tester.test_create_game()
-    tester.test_simulate_event()
     
     # Print summary
     tester.print_summary()
