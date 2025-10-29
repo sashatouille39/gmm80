@@ -122,17 +122,12 @@ const CustomPlayersList = ({ onSelectPlayer, onCreateNew, selectedPlayers = [] }
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      {/* Avatar miniature */}
-                      <div 
-                        className="w-10 h-10 rounded-full border-2 border-red-500 relative overflow-hidden"
-                        style={{ backgroundColor: player.portrait.skinColor }}
-                      >
-                        <div className="w-full h-6 absolute top-0" 
-                             style={{ backgroundColor: player.portrait.hairColor, opacity: 0.8 }}></div>
-                        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-black">
-                          {player.name.charAt(0).toUpperCase()}
-                        </div>
-                      </div>
+                      {/* Portrait en calques */}
+                      <LayeredPortrait 
+                        player={player} 
+                        size="small"
+                        className="border-2 border-red-500 rounded-full"
+                      />
                       
                       <div className="flex-1">
                         <h4 className="text-white font-medium">{player.name}</h4>
