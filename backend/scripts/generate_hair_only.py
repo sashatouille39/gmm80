@@ -6,6 +6,7 @@ Ne touche PAS aux autres calques déjà générés
 import os
 import sys
 import time
+import asyncio
 from pathlib import Path
 
 # Ajouter le répertoire parent au PYTHONPATH
