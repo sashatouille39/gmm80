@@ -458,14 +458,20 @@ const GameSetup = ({ gameState, onStartGame }) => {
                                 : 'bg-gray-800/50 border-gray-600'
                           }`}
                         >
-                          <div className={`w-12 h-12 rounded-full mx-auto mb-2 flex items-center justify-center text-white font-bold ${
-                            player.isCustom 
-                              ? 'bg-blue-600' 
-                              : player.isCelebrity
-                                ? 'bg-yellow-600'
-                                : 'bg-red-600'
-                          }`}>
-                            {player.isCustom ? '👤' : player.isCelebrity ? '👑' : player.number}
+                          {/* Portrait du joueur */}
+                          <div className="flex justify-center mb-2">
+                            <LayeredPortrait 
+                              player={player} 
+                              size="small"
+                              showNumber={true}
+                              className={`${
+                                player.isCustom 
+                                  ? 'ring-2 ring-blue-500' 
+                                  : player.isCelebrity
+                                    ? 'ring-2 ring-yellow-500'
+                                    : 'ring-2 ring-red-500'
+                              }`}
+                            />
                           </div>
                           <div className="text-white text-sm font-medium truncate flex items-center justify-center gap-1">
                             {player.name}
