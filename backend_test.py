@@ -18061,8 +18061,8 @@ class BackendTester:
             self.log_result("Portrait Layers - Game Creation", True, 
                           f"✅ Partie créée avec succès - {len(players)} joueurs générés")
             
-            # Test 2: Vérification des portraits pour CHAQUE joueur
-            print("\n🔍 TEST 2: VÉRIFICATION DES CALQUES DE PORTRAITS")
+            # Test 3: Vérification des portraits pour CHAQUE joueur
+            print("\n🔍 TEST 3: VÉRIFICATION DES CALQUES DE PORTRAITS")
             print("-" * 60)
             
             portrait_errors = []
