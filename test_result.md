@@ -115,7 +115,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-## user_problem_statement: "corrige ce problème : quand on achète une célébrité ou un ancien gagnant et qu'on la fait participer aux jeux, si elle meurt, elle doit définitivement disparaître de l'onglet célébrités de quand on créé nos jeux et de la boutique des célébrités ; ensuite elle doit être remplacé par une nouvelle célébrité du même métier de nouveau achetable dans la boutique."
+## user_problem_statement: "Générateur de portraits par calques cohérents avec la nationalité. Le système doit générer des calques PNG (base/yeux/cheveux/bouche/nez) via IA (gpt-image-1) avec palettes de couleurs par continent (nordique, méditerranéen, africain, asiatique, etc.). Générer des dizaines de coupes de cheveux pour fille et garçon. Les calques doivent se superposer dans le frontend pour créer un portrait complet selon nationalité et sexe du personnage. Les portraits doivent apparaître dans le jeu quand les joueurs sont générés."
 
 ## backend:
   - task: "Système de mortalité des célébrités et remplacement automatique"
