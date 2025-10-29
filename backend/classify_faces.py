@@ -105,13 +105,14 @@ class FaceClassifier:
                 'error': str(e)
             }
     
-    def classify_all_images(self):
-        """Classifie toutes les images du dossier temporaire"""
+    def classify_all_images(self, batch_size: int = 50):
+        """Classifie toutes les images du dossier temporaire par lots"""
         print("=" * 80)
         print("🔍 CLASSIFICATION AUTOMATIQUE DES VISAGES")
         print("=" * 80)
         print(f"\n📁 Dossier source: {self.temp_dir}")
         print(f"📄 Fichier résultats: {self.results_file}")
+        print(f"\n⚙️ Traitement par lots de {batch_size} images")
         print("\n⏰ Cette étape peut prendre 1-2 heures...")
         print("=" * 80 + "\n")
         
@@ -145,9 +146,10 @@ class FaceClassifier:
                     'Échec': failed
                 })
                 
-                # Sauvegarder tous les 100 images
-                if classified % 100 == 0:
+                # Sauvegarder et nettoyer la mémoire tous les batch_size images
+                if classified % batch_size == 0:
                     self.save_results()
+                    gc.collect()  # Forcer le garbage collector
         
         # Sauvegarder les résultats finaux
         self.save_results()
