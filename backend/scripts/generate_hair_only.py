@@ -166,15 +166,9 @@ async def main():
     else:
         print(f"\n✅ Cheveux homme déjà complets ({hair_male_existing}/100)")
     
-    # Générer cheveux femme (si besoin)
-    if hair_female_existing < 100:
-        female_ok, female_fail = await generate_hair_variations(
-            service, "female",
-            start_index=hair_female_existing + 1,
-            target_count=100
-        )
-    else:
-        print(f"\n✅ Cheveux femme déjà complets ({hair_female_existing}/100)")
+    # NE PAS générer cheveux femme automatiquement
+    print(f"\n⏸️  Cheveux femme: génération mise en pause (à lancer manuellement plus tard)")
+    print(f"   Fichiers existants: {hair_female_existing}/100")
     
     # Résumé
     elapsed_total = time.time() - start_total
