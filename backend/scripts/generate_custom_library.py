@@ -455,7 +455,7 @@ async def generate_custom_library():
     print(f"  🎯 COMBINAISONS POSSIBLES: {combinations:,}")
     
     print("\n" + "=" * 70)
-    input("\n⏸️  Appuyez sur ENTRÉE pour commencer la génération...")
+    print("\n🚀 LANCEMENT DE LA GÉNÉRATION...")
     print("=" * 70)
     
     # Compteurs de succès
