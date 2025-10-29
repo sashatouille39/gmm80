@@ -43,19 +43,22 @@ HAIR_STYLES_FEMALE = [
 
 HAIR_COLORS = ["black", "dark brown", "light brown", "blonde", "red", "auburn", "gray", "white", "silver", "platinum"]
 
-async def generate_hair_variations(service, gender: str, count: int = 100):
+async def generate_hair_variations(service, gender: str, start_index: int = 1, target_count: int = 100):
     """Génère les variations de cheveux pour un genre"""
     styles = HAIR_STYLES_MALE if gender == "male" else HAIR_STYLES_FEMALE
     folder = f"hair_{gender}"
     
+    count_to_generate = target_count - start_index + 1
+    
     print(f"\n{'='*60}")
-    print(f"GÉNÉRATION CHEVEUX {gender.upper()}: {count} variations")
+    print(f"GÉNÉRATION CHEVEUX {gender.upper()}")
+    print(f"Indices: {start_index} à {target_count} ({count_to_generate} images)")
     print(f"{'='*60}\n")
     
     generated = 0
     failed = 0
     
-    for i in range(count):
+    for i in range(start_index, target_count + 1):
         # Sélection du style et couleur
         style = styles[i % len(styles)]
         color = HAIR_COLORS[i % len(HAIR_COLORS)]
