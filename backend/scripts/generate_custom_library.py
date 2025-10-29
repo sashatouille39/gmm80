@@ -80,11 +80,9 @@ Exclude: Eyes, nose, mouth, hair, eyebrows, facial hair
 Quality: High detail, smooth skin texture
 Format: PNG with transparency"""
 
-            images = await service.image_gen.generate_image(
+            images = await service.image_gen.generate_images(
                 prompt=prompt,
                 model="gpt-image-1",
-                size="1024x1024",
-                quality="standard",
                 number_of_images=1
             )
             
@@ -238,11 +236,9 @@ Exclude: Face, forehead, ears, facial features
 Quality: High detail with individual hair strands visible
 Format: PNG with transparency"""
 
-            images = await service.image_gen.generate_image(
+            images = await service.image_gen.generate_images(
                 prompt=prompt,
                 model="gpt-image-1",
-                size="1024x1024",
-                quality="standard",
                 number_of_images=1
             )
             
@@ -282,11 +278,9 @@ Exclude: Face, forehead, ears, facial features
 Quality: High detail with flowing hair texture
 Format: PNG with transparency"""
 
-            images = await service.image_gen.generate_image(
+            images = await service.image_gen.generate_images(
                 prompt=prompt,
                 model="gpt-image-1",
-                size="1024x1024",
-                quality="standard",
                 number_of_images=1
             )
             
@@ -346,11 +340,9 @@ Exclude: Teeth, tongue, nose, chin, other facial features
 Quality: High detail with natural lip texture
 Format: PNG with transparency"""
 
-            images = await service.image_gen.generate_image(
+            images = await service.image_gen.generate_images(
                 prompt=prompt,
                 model="gpt-image-1",
-                size="1024x1024",
-                quality="standard",
                 number_of_images=1
             )
             
@@ -409,11 +401,9 @@ Exclude: Eyes, mouth, cheeks, other facial features
 Quality: High detail with natural nose structure
 Format: PNG with transparency"""
 
-            images = await service.image_gen.generate_image(
+            images = await service.image_gen.generate_images(
                 prompt=prompt,
                 model="gpt-image-1",
-                size="1024x1024",
-                quality="standard",
                 number_of_images=1
             )
             
