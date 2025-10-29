@@ -18019,13 +18019,12 @@ class BackendTester:
             game_data = response.json()
             
             # Vérifier la structure de base
-            if 'game' not in game_data or 'players' not in game_data['game']:
+            if 'players' not in game_data:
                 self.log_result("Portrait Layers - Game Creation", False, 
-                              "❌ Structure de réponse incorrecte - 'game' ou 'players' manquant")
+                              "❌ Structure de réponse incorrecte - 'players' manquant")
                 return
             
-            game = game_data['game']
-            players = game['players']
+            players = game_data['players']
             
             if len(players) != 10:
                 self.log_result("Portrait Layers - Game Creation", False, 
