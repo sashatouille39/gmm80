@@ -432,7 +432,7 @@ Variation #{variation_id} to ensure uniqueness."""
                     base_path = f"{self.base_path}/base/{base_filename}_base.png"
                     with open(base_path, 'wb') as f:
                         f.write(base_bytes)
-                    layers['base'] = f"/static/portraits/base/{base_filename}_base.png"
+                    layers['base'] = f"/api/static/portraits/base/{base_filename}_base.png"
             
             # Yeux
             if 'eyes' in layer_types:
