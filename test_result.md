@@ -307,7 +307,7 @@
   - task: "Système de portraits réalistes semi-réalistes par continents (1200 portraits × 6 continents = 7200 total)"
     implemented: true
     working: true
-    file: "services/realistic_portrait_service.py, services/game_service_fixed.py, components/LayeredPortrait.jsx, download_realistic_portraits_optimized.py"
+    file: "services/realistic_portrait_service.py, services/game_service.py, components/LayeredPortrait.jsx, download_realistic_portraits_optimized.py"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
@@ -315,6 +315,9 @@
         - working: "in_progress"
           agent: "main"
           comment: "🎨 SYSTÈME DE PORTRAITS RÉALISTES EN COURS: Téléchargement de 7200 portraits semi-réalistes depuis thispersonnotexist.org (StyleGAN3). Configuration: 1200 portraits PAR continent (Afrique/Asie/Europe/Amérique/Moyen-Orient/Océanie), 50/50 hommes/femmes, âges 21-50 ans, émotion neutre. Script optimisé: télécharge 8 portraits à la fois, saute les fichiers existants, reprise automatique. Backend: Service RealisticPortraitService avec mapping 250+ nationalités vers continents/ethnies, sélection aléatoire par nationalité/genre. Frontend: Composant LayeredPortrait.jsx modifié avec 3 modes de priorité: 1) Portrait réaliste complet (NOUVEAU), 2) Calques superposés (ancien système), 3) Cercle avec numéro (fallback). Routes API: /api/portraits/realistic/stats et /api/portraits/realistic/random. Installation: Playwright + Chromium (175.4 MB). Progression actuelle: 964/7200 portraits (13.4%) - Afrique: 964/1200 (80%), autres continents: 0/1200. Tests réussis: Les joueurs africains masculins utilisent déjà les portraits réalistes automatiquement. Temps estimé restant: ~3-4 heures pour compléter les 7200 portraits."
+        - working: true
+          agent: "main"
+          comment: "✅ SYSTÈME DE PORTRAITS RÉALISTES OPÉRATIONNEL À 90.8%! Téléchargement en cours: 6541/7200 portraits (manque 659). Répartition: Afrique 1200/1200 (100% ✅), Asie 1199/1200 (99.9% ✅), Europe 1076/1200 (89.7%), Amérique 1030/1200 (85.8%), Moyen-Orient 1019/1200 (84.9%), Océanie 1017/1200 (84.8%). Backend: service/game_service.py mis à jour avec support complet des portraits réalistes (ajout import RealisticPortraitService, constantes EYE_COLORS/EYE_SHAPES, modification _generate_portrait() avec système de priorité). Tests validés: génération de joueurs réussie avec portraits réalistes assignés automatiquement (Indonésienne→asia/asian/F, Marocain→africa/black/M, Suédois→europe/white/M, Australienne→oceania/white/F, Indienne→asia/indian/F). Frontend: LayeredPortrait.jsx déjà configuré avec système de priorité (réaliste > calques > fallback). Script de téléchargement: download_realistic_portraits_optimized.py fonctionne en arrière-plan avec Playwright. Temps estimé pour complétion: ~1-2h."
 
   - task: "Test des gains VIP ne se collectent plus automatiquement"
     implemented: true
