@@ -409,12 +409,39 @@ class GameService:
     
     @classmethod
     def _generate_portrait(cls, nationality: str, gender: str) -> PlayerPortrait:
-        """Génère un portrait cohérent avec la nationalité et le sexe en utilisant les calques IA"""
+        """
+        Génère un portrait cohérent avec la nationalité et le sexe
+        Utilise les portraits réalistes si disponibles, sinon fallback sur calques
+        """
         
-        # Utiliser le service de génération de portraits par calques
+        # Essayer d'abord avec les portraits réalistes
+        realistic_service = RealisticPortraitService()
+        
+        if realistic_service.is_ready():
+            # Utiliser les portraits réalistes
+            realistic_portrait_path = realistic_service.select_random_portrait(nationality, gender)
+            
+            if realistic_portrait_path:
+                # Portrait réaliste trouvé
+                return PlayerPortrait(
+                    face_shape=random.choice(cls.FACE_SHAPES),
+                    skin_color=random.choice(cls.SKIN_COLORS),
+                    hairstyle=random.choice(cls.HAIRSTYLES),
+                    hair_color=random.choice(cls.HAIR_COLORS),
+                    eye_color=random.choice(cls.EYE_COLORS),
+                    eye_shape=random.choice(cls.EYE_SHAPES),
+                    realistic_portrait=realistic_portrait_path,
+                    # Garder les calques à None (pas utilisés)
+                    layer_base=None,
+                    layer_eyes=None,
+                    layer_hair=None,
+                    layer_mouth=None,
+                    layer_nose=None
+                )
+        
+        # Fallback : utiliser l'ancien système de calques
+        print(f"⚠️ Portraits réalistes non disponibles pour {nationality} ({gender}), utilisation des calques")
         portrait_service = PortraitGeneratorService()
-        
-        # Obtenir les calques aléatoires cohérents avec la nationalité et le sexe
         layers = portrait_service.select_random_portrait_layers(nationality, gender)
         
         # Générer aussi les propriétés de fallback pour compatibilité
