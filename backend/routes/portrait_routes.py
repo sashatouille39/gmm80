@@ -305,4 +305,3 @@ async def get_unique_realistic_portrait(nationality: str, gender: str):
             detail=f"Erreur lors de l'assignation du portrait: {str(e)}"
         )
 
-        )
