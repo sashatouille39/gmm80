@@ -109,7 +109,17 @@ class OptimizedPortraitDownloader:
         """Génère une clé unique pour suivre la progression"""
         return f"{continent}_{ethnicity}_{gender}_{age}".replace(" ", "_")
         
-    async def download_batch(self, page, continent, ethnicity, gender, age, batch_num, batch_size):
+    def count_existing_files(self, continent, ethnicity, gender, age):
+        """Compte les fichiers déjà téléchargés"""
+        ethnicity_clean = ethnicity.replace(" ", "_")
+        dir_path = self.base_dir / continent / ethnicity_clean / gender
+        if not dir_path.exists():
+            return 0
+        age_pattern = age.replace('-', '_')
+        existing = list(dir_path.glob(f"{continent}_{ethnicity_clean}_{gender}_{age_pattern}_*.jpg"))
+        return len(existing)
+    
+    async def download_batch(self, page, continent, ethnicity, gender, age, batch_num, batch_size, start_num):
         """Télécharge un lot de 8 portraits"""
         ethnicity_clean = ethnicity.replace(" ", "_")
         progress_key = self.get_progress_key(continent, ethnicity, gender, age)
