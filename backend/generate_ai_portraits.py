@@ -154,8 +154,8 @@ Quality: Sharp focus, professional photography, natural colors, realistic render
             # Générer l'image avec gpt-image-1
             print(f"      Génération via gpt-image-1...", end='', flush=True)
             
-            result = await asyncio.to_thread(
-                self.image_generator.generate_images,
+            # La méthode est async, on l'appelle directement
+            result = await self.image_generator.generate_images(
                 prompt=prompt,
                 model="gpt-image-1",
                 number_of_images=1,
