@@ -212,17 +212,27 @@ class OptimizedPortraitDownloader:
         
         for age_idx, age in enumerate(AGES):
             age_count = count_per_age + (1 if age_idx < remainder else 0)
-            num_batches = (age_count + PORTRAITS_PER_BATCH - 1) // PORTRAITS_PER_BATCH
             
-            print(f"    📅 Âge {age} : {age_count} portraits ({num_batches} lots)")
+            # Vérifier les fichiers existants
+            existing_count = self.count_existing_files(continent, ethnicity, gender, age)
+            
+            if existing_count >= age_count:
+                print(f"    📅 Âge {age} : {existing_count}/{age_count} ✅ Déjà complet, skip")
+                self.total_downloaded += existing_count
+                continue
+            
+            remaining_to_download = age_count - existing_count
+            num_batches = (remaining_to_download + PORTRAITS_PER_BATCH - 1) // PORTRAITS_PER_BATCH
+            
+            print(f"    📅 Âge {age} : {existing_count}/{age_count} déjà téléchargés, {remaining_to_download} restants ({num_batches} lots)")
             
             for batch_num in range(num_batches):
                 # Calculer combien d'images dans ce lot
-                remaining = age_count - (batch_num * PORTRAITS_PER_BATCH)
-                batch_size = min(PORTRAITS_PER_BATCH, remaining)
+                batch_size = min(PORTRAITS_PER_BATCH, remaining_to_download - (batch_num * PORTRAITS_PER_BATCH))
+                start_num = existing_count + (batch_num * PORTRAITS_PER_BATCH)
                 
                 downloaded = await self.download_batch(
-                    page, continent, ethnicity, gender, age, batch_num, batch_size
+                    page, continent, ethnicity, gender, age, batch_num, batch_size, start_num
                 )
                 
                 # Pause entre les lots
