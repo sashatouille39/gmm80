@@ -499,7 +499,39 @@ class GameService:
     
     @classmethod
     def _generate_portrait(cls, nationality: str, gender: str = 'M') -> PlayerPortrait:
-        """Génère un portrait cohérent avec la nationalité et sélectionne les calques PNG"""
+        """
+        Génère un portrait cohérent avec la nationalité et le sexe
+        Utilise les portraits réalistes si disponibles, sinon fallback sur calques
+        """
+        
+        # PRIORITÉ 1 : Essayer d'abord avec les portraits réalistes
+        realistic_service = RealisticPortraitService()
+        
+        if realistic_service.is_ready():
+            # Utiliser les portraits réalistes
+            realistic_portrait_path = realistic_service.select_random_portrait(nationality, gender)
+            
+            if realistic_portrait_path:
+                # Portrait réaliste trouvé - retourner avec les métadonnées de fallback
+                return PlayerPortrait(
+                    face_shape=random.choice(cls.FACE_SHAPES),
+                    skin_color=random.choice(cls.SKIN_COLORS),
+                    hairstyle=random.choice(cls.HAIRSTYLES),
+                    hair_color=random.choice(cls.HAIR_COLORS),
+                    eye_color=random.choice(cls.EYE_COLORS),
+                    eye_shape=random.choice(cls.EYE_SHAPES),
+                    realistic_portrait=realistic_portrait_path,
+                    # Garder les calques à None (pas utilisés quand portrait réaliste existe)
+                    layer_base=None,
+                    layer_eyes=None,
+                    layer_hair=None,
+                    layer_mouth=None,
+                    layer_nose=None
+                )
+        
+        # PRIORITÉ 2 : Fallback sur l'ancien système de calques PNG
+        print(f"⚠️ Portraits réalistes non disponibles pour {nationality} ({gender}), utilisation des calques")
+        
         skin_color_ranges = {
             # Asie de l'Est
             'Chinois': (2, 10),
@@ -586,7 +618,9 @@ class GameService:
             layer_eyes=portrait_layers.get('eyes'),
             layer_hair=portrait_layers.get('hair'),
             layer_mouth=portrait_layers.get('mouth'),
-            layer_nose=portrait_layers.get('nose')
+            layer_nose=portrait_layers.get('nose'),
+            # Pas de portrait réaliste dans ce cas
+            realistic_portrait=None
         )
     
     @classmethod
