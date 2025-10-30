@@ -8,6 +8,7 @@ from models.game_models import (
 from services.events_service import EventsService
 from services.portrait_generator_service import portrait_service
 from services.realistic_portrait_service import RealisticPortraitService
+from services.portrait_assignment_service import PortraitAssignmentService
 
 class GameService:
     
