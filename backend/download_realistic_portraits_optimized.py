@@ -167,7 +167,7 @@ class OptimizedPortraitDownloader:
                         continue
                         
                     # Télécharger l'image
-                    image_num = batch_num * PORTRAITS_PER_BATCH + idx + 1
+                    image_num = start_num + idx + 1
                     filename = f"{continent}_{ethnicity_clean}_{gender}_{age.replace('-', '_')}_{image_num:04d}.jpg"
                     file_path = self.base_dir / continent / ethnicity_clean / gender / filename
                     
