@@ -442,7 +442,7 @@ Variation #{variation_id} to ensure uniqueness."""
                     eyes_path = f"{self.base_path}/eyes/{base_filename}_eyes.png"
                     with open(eyes_path, 'wb') as f:
                         f.write(eyes_bytes)
-                    layers['eyes'] = f"/static/portraits/eyes/{base_filename}_eyes.png"
+                    layers['eyes'] = f"/api/static/portraits/eyes/{base_filename}_eyes.png"
             
             # Cheveux
             if 'hair' in layer_types:
