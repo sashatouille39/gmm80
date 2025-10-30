@@ -161,18 +161,17 @@ class OptimizedPortraitDownloader:
                     filename = f"{continent}_{ethnicity_clean}_{gender}_{age.replace('-', '_')}_{image_num:04d}.jpg"
                     file_path = self.base_dir / continent / ethnicity_clean / gender / filename
                     
-                    # Utiliser httpx pour télécharger
-                    async with self.context.request.new_context() as request_context:
-                        response = await request_context.get(src)
-                        if response.ok:
-                            content = await response.body()
-                            with open(file_path, 'wb') as f:
-                                f.write(content)
-                            downloaded_count += 1
-                            self.total_downloaded += 1
-                            print(f"✅ [{self.total_downloaded}/7200] {filename}")
-                        else:
-                            print(f"⚠️  Échec HTTP {response.status} pour {filename}")
+                    # Utiliser l'API Request de Playwright
+                    response = await self.context.request.get(src)
+                    if response.ok:
+                        content = await response.body()
+                        with open(file_path, 'wb') as f:
+                            f.write(content)
+                        downloaded_count += 1
+                        self.total_downloaded += 1
+                        print(f"✅ [{self.total_downloaded}/7200] {filename}")
+                    else:
+                        print(f"⚠️  Échec HTTP {response.status} pour {filename}")
                             
                 except Exception as e:
                     print(f"⚠️  Erreur image {idx}: {str(e)}")
