@@ -93,7 +93,7 @@ class PortraitAssignmentService:
         
         # Filtrer pour ne garder que les portraits non assignés
         available_paths = [
-            str(p).replace('/app/backend/static', '/static') 
+            str(p).replace('/app/backend/static', '/api/static') 
             for p in available_portraits
         ]
         unassigned = [p for p in available_paths if p not in assigned_portraits]
