@@ -101,6 +101,65 @@ async def get_available_regions():
     }
 
 
+
+@router.get("/realistic/stats")
+async def get_realistic_portrait_stats():
+    """
+    Retourne les statistiques des portraits réalistes disponibles
+    """
+    try:
+        stats = realistic_portrait_service.get_portrait_stats()
+        is_ready = realistic_portrait_service.is_ready()
+        
+        return {
+            "success": True,
+            "ready": is_ready,
+            "stats": stats,
+            "message": "Système de portraits réalistes actif" if is_ready else "Portraits réalistes en cours de téléchargement"
+        }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur lors de la récupération des stats: {str(e)}"
+        )
+
+
+@router.get("/realistic/random")
+async def get_random_realistic_portrait(nationality: str, gender: str):
+    """
+    Retourne un portrait réaliste aléatoire pour une nationalité et un genre
+    """
+    try:
+        portrait_path = realistic_portrait_service.select_random_portrait(nationality, gender)
+        
+        if not portrait_path:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Aucun portrait disponible pour {nationality} ({gender})"
+            )
+        
+        # Obtenir le continent et l'ethnie
+        continent, ethnicity = realistic_portrait_service.get_continent_and_ethnicity(nationality)
+        
+        return {
+            "success": True,
+            "nationality": nationality,
+            "gender": gender,
+            "continent": continent,
+            "ethnicity": ethnicity,
+            "portrait_path": portrait_path
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur lors de la sélection du portrait: {str(e)}"
+        )
+
+
 @router.post("/batch-generate")
 async def batch_generate_portraits(
     nationalities: List[str],
