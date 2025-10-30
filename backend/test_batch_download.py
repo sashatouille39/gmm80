@@ -88,16 +88,16 @@ async def test_optimized_download():
                     filename = f"{test['continent']}_{ethnicity_clean}_{test['gender']}_{test['age'].replace('-', '_')}_{img_idx+1:04d}.jpg"
                     file_path = dir_path / filename
                     
-                    async with context.request.new_context() as request_context:
-                        response = await request_context.get(src)
-                        if response.ok:
-                            content = await response.body()
-                            with open(file_path, 'wb') as f:
-                                f.write(content)
-                            total_downloaded += 1
-                            print(f"  ✅ {filename}")
-                        else:
-                            print(f"  ⚠️  Échec HTTP {response.status}")
+                    # Télécharger avec l'API Request de Playwright
+                    response = await context.request.get(src)
+                    if response.ok:
+                        content = await response.body()
+                        with open(file_path, 'wb') as f:
+                            f.write(content)
+                        total_downloaded += 1
+                        print(f"  ✅ {filename}")
+                    else:
+                        print(f"  ⚠️  Échec HTTP {response.status}")
                             
                 except Exception as e:
                     print(f"  ⚠️  Erreur : {str(e)}")
