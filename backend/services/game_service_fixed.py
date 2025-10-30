@@ -59,6 +59,17 @@ class GameService:
         "#BA55D3", "#DA70D6", "#EE82EE", "#FF1493", "#FF69B4", "#FFB6C1"
     ]
     
+    EYE_COLORS = [
+        "#8B4513", "#A0522D", "#654321", "#704214", "#5C4033",  # Marron
+        "#228B22", "#32CD32", "#00FF00", "#7CFC00",  # Vert
+        "#0000FF", "#4169E1", "#6495ED", "#87CEEB",  # Bleu
+        "#808080", "#A9A9A9", "#C0C0C0"  # Gris
+    ]
+    
+    EYE_SHAPES = [
+        "Amande", "Rond", "Allongé", "En amande", "Bridé", "Tombant"
+    ]
+    
     UNIFORM_STYLES = ["Classic", "Moderne", "Vintage", "Sport", "Élégant"]
     UNIFORM_COLORS = ["Rouge", "Bleu", "Vert", "Jaune", "Rose", "Violet", "Orange", "Noir", "Blanc"]
     UNIFORM_PATTERNS = ["Uni", "Rayures", "Carreaux", "Points", "Floral", "Géométrique"]
