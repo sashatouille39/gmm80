@@ -1,0 +1,30 @@
+{
+  "europe_white_M": [
+    "/static/realistic_portraits/europe/white/M/europe_white_M_21_35_0095.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_34_50_0119.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_21_35_0200.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_21_35_0120.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_21_35_0202.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_21_35_0276.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_21_35_0082.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_34_50_0083.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_34_50_0179.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_34_50_0237.jpg",
+    "/static/realistic_portraits/europe/white/M/europe_white_M_21_35_0171.jpg"
+  ],
+  "asia_asian_F": [
+    "/static/realistic_portraits/asia/asian/F/asia_asian_F_34_50_0023.jpg",
+    "/static/realistic_portraits/asia/asian/F/asia_asian_F_21_35_0100.jpg"
+  ],
+  "africa_black_M": [
+    "/static/realistic_portraits/africa/black/M/africa_black_M_21_35_0073.jpg",
+    "/static/realistic_portraits/africa/black/M/africa_black_M_34_50_0250.jpg"
+  ],
+  "america_white_F": [
+    "/static/realistic_portraits/america/white/F/america_white_F_21_35_0117.jpg"
+  ],
+  "asia_indian_M": [
+    "/static/realistic_portraits/asia/indian/M/asia_indian_M_21_35_0020.jpg",
+    "/static/realistic_portraits/asia/indian/M/asia_indian_M_34_50_0079.jpg"
+  ]
+}
