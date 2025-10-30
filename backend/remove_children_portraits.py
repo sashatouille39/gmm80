@@ -198,12 +198,7 @@ def main():
     print(f"Âge minimum autorisé: {MIN_AGE} ans")
     print(f"Les portraits d'enfants seront déplacés vers: {BACKUP_DIR}")
     print("="*60)
-    
-    # Confirmation
-    response = input("\n⚠️  Voulez-vous continuer ? (o/n): ").lower()
-    if response not in ['o', 'oui', 'y', 'yes']:
-        print("❌ Opération annulée")
-        return
+    print("\n✅ Démarrage du scan automatique...")
     
     # Créer le remover et lancer le scan
     remover = ChildrenPortraitRemover()
