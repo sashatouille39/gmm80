@@ -71,12 +71,12 @@ async def test_download():
         
         # Test 2: Femme blanche
         print("\n📸 Test 2: Femme blanche, 34-50 ans, émotion neutre")
-        await page.goto('https://thispersonnotexist.org/', wait_until='domcontentloaded', timeout=30000)
-        await asyncio.sleep(3)
+        await page.goto('https://thispersonnotexist.org/', wait_until='networkidle', timeout=30000)
+        await asyncio.sleep(5)
         
-        # Sélectionner femme
-        await page.click('input#tabtwo')
-        await asyncio.sleep(1)
+        # Sélectionner femme (cliquer sur le label)
+        await page.click('label[for="tabtwo"]', force=True)
+        await asyncio.sleep(2)
         
         # Sélectionner white
         await page.select_option('select#xrace', 'white')
