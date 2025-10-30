@@ -16,26 +16,20 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # Configuration
 MIN_AGE = 21  # Âge minimum autorisé
-PORTRAITS_DIR = Path("/app/backend/static/portraits")
-BACKUP_DIR = Path("/app/backend/static/portraits_backup_children")
+PORTRAITS_DIR = Path("/app/backend/static/realistic_portraits")
+BACKUP_DIR = Path("/app/backend/static/realistic_portraits_backup_children")
 REPORT_FILE = Path("/app/backend/children_removal_report.json")
 
-# Dossiers à scanner (tous les dossiers de portraits)
+# Dossiers à scanner (tous les sous-dossiers d'ethnicités)
 PORTRAIT_FOLDERS = [
-    "africa/male",
-    "africa/female", 
-    "asia/male",
-    "asia/female",
-    "europe/male",
-    "europe/female",
-    "north_america/male",
-    "north_america/female",
-    "south_america/male",
-    "south_america/female",
-    "oceania/male",
-    "oceania/female",
-    "middle_east/male",
-    "middle_east/female"
+    "africa/black",
+    "asia/asian",
+    "asia/indian",
+    "europe/white",
+    "america/white",
+    "america/latino_hispanic",
+    "middle_east/middle_eastern",
+    "oceania/white"
 ]
 
 class ChildrenPortraitRemover:
