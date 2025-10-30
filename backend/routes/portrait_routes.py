@@ -1,5 +1,5 @@
 """
-Routes API pour la génération de portraits par calques
+Routes API pour la génération de portraits par calques et portraits réalistes
 """
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
@@ -8,8 +8,12 @@ from typing import Optional, List
 import asyncio
 
 from services.portrait_generator_service import portrait_service
+from services.realistic_portrait_service import RealisticPortraitService
 
 router = APIRouter(prefix="/api/portraits", tags=["portraits"])
+
+# Initialiser le service de portraits réalistes
+realistic_portrait_service = RealisticPortraitService()
 
 
 class PortraitGenerationRequest(BaseModel):
