@@ -155,37 +155,23 @@ Quality: Sharp focus, professional photography, natural colors, realistic render
             print(f"      Génération via gpt-image-1...", end='', flush=True)
             
             result = await asyncio.to_thread(
-                self.image_generator.generate_image,
+                self.image_generator.generate_images,
                 prompt=prompt,
-                model="gpt-image-1",  # Utiliser le modèle le plus récent
-                size="1024x1024",
-                quality="standard",  # Standard pour économiser
-                n=1
+                model="gpt-image-1",
+                number_of_images=1,
+                quality="low"  # low pour économiser le crédit
             )
             
-            if result and 'data' in result and len(result['data']) > 0:
-                # Récupérer l'image (base64 ou URL)
-                image_data = result['data'][0]
-                
-                if 'b64_json' in image_data:
-                    # Décoder base64
-                    image_bytes = base64.b64decode(image_data['b64_json'])
-                    with open(save_path, 'wb') as f:
-                        f.write(image_bytes)
-                    print(" ✓", flush=True)
-                    return True
-                elif 'url' in image_data:
-                    # Télécharger depuis l'URL
-                    import requests
-                    response = requests.get(image_data['url'])
-                    if response.status_code == 200:
-                        with open(save_path, 'wb') as f:
-                            f.write(response.content)
-                        print(" ✓", flush=True)
-                        return True
-            
-            print(" ✗ (pas de données)", flush=True)
-            return False
+            # result est une liste de bytes
+            if result and len(result) > 0:
+                image_bytes = result[0]
+                with open(save_path, 'wb') as f:
+                    f.write(image_bytes)
+                print(" ✓", flush=True)
+                return True
+            else:
+                print(" ✗ (pas de données)", flush=True)
+                return False
             
         except Exception as e:
             error_msg = str(e)
