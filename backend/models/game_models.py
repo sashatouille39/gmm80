@@ -39,12 +39,14 @@ class PlayerPortrait(BaseModel):
     hair_color: str
     eye_color: str
     eye_shape: str
-    # Calques PNG pour portraits générés par IA
+    # Calques PNG pour portraits générés par IA (ANCIEN SYSTÈME - Déprécié)
     layer_base: Optional[str] = None  # Chemin vers le calque de base (tête)
     layer_eyes: Optional[str] = None  # Chemin vers le calque des yeux
     layer_hair: Optional[str] = None  # Chemin vers le calque des cheveux
     layer_mouth: Optional[str] = None  # Chemin vers le calque de la bouche
     layer_nose: Optional[str] = None  # Chemin vers le calque du nez
+    # Portrait réaliste complet (NOUVEAU SYSTÈME)
+    realistic_portrait: Optional[str] = None  # Chemin vers le portrait complet semi-réaliste
 
 class PlayerUniform(BaseModel):
     style: str
