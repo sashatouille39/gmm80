@@ -220,6 +220,7 @@ async def batch_generate_portraits(
         raise HTTPException(
             status_code=500,
             detail=f"Erreur lors de la génération en lot: {str(e)}"
+        )
 
 
 @router.get("/assignments/stats")
