@@ -98,7 +98,7 @@ Testé avec diverses nationalités :
 
 ### **Test 3 : Accessibilité des Images**
 ```bash
-curl https://content-cleanup-3.preview.emergentagent.com/static/portraits/base/nordic_M_simple_9740_base.png
+curl https://portrait-shield.preview.emergentagent.com/static/portraits/base/nordic_M_simple_9740_base.png
 ```
 ✅ **Résultat** : HTTP 200 - Les images sont accessibles
 
