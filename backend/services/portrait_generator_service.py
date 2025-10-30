@@ -497,11 +497,11 @@ Variation #{variation_id} to ensure uniqueness."""
                     
                     # Vérifier que tous les calques existent
                     portrait_set = {
-                        'base': f"/static/portraits/base/{base_name}_base.png",
-                        'eyes': f"/static/portraits/eyes/{base_name}_eyes.png",
-                        'hair': f"/static/portraits/hair/{base_name}_hair.png",
-                        'mouth': f"/static/portraits/mouth/{base_name}_mouth.png",
-                        'nose': f"/static/portraits/nose/{base_name}_nose.png",
+                        'base': f"/api/static/portraits/base/{base_name}_base.png",
+                        'eyes': f"/api/static/portraits/eyes/{base_name}_eyes.png",
+                        'hair': f"/api/static/portraits/hair/{base_name}_hair.png",
+                        'mouth': f"/api/static/portraits/mouth/{base_name}_mouth.png",
+                        'nose': f"/api/static/portraits/nose/{base_name}_nose.png",
                     }
                     
                     # Vérifier que tous les fichiers existent
