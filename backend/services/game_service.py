@@ -513,18 +513,18 @@ class GameService:
     def _generate_portrait(cls, nationality: str, gender: str = 'M') -> PlayerPortrait:
         """
         Génère un portrait cohérent avec la nationalité et le sexe
-        Utilise les portraits réalistes si disponibles, sinon fallback sur calques
+        Utilise les portraits réalistes UNIQUES si disponibles, sinon fallback sur calques
         """
         
-        # PRIORITÉ 1 : Essayer d'abord avec les portraits réalistes
-        realistic_service = RealisticPortraitService()
+        # PRIORITÉ 1 : Essayer d'abord avec les portraits réalistes UNIQUES
+        assignment_service = PortraitAssignmentService()
         
-        if realistic_service.is_ready():
-            # Utiliser les portraits réalistes
-            realistic_portrait_path = realistic_service.select_random_portrait(nationality, gender)
+        if assignment_service.realistic_service.is_ready():
+            # Utiliser les portraits réalistes avec assignation unique
+            realistic_portrait_path = assignment_service.get_unique_portrait(nationality, gender)
             
             if realistic_portrait_path:
-                # Portrait réaliste trouvé - retourner avec les métadonnées de fallback
+                # Portrait réaliste unique trouvé - retourner avec les métadonnées de fallback
                 return PlayerPortrait(
                     face_shape=random.choice(cls.FACE_SHAPES),
                     skin_color=random.choice(cls.SKIN_COLORS),
