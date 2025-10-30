@@ -344,7 +344,7 @@ class RealisticPortraitService:
         selected = random.choice(portraits)
         
         # Convertir en chemin relatif pour l'API
-        relative_path = str(selected).replace('/app/backend/static', '/static')
+        relative_path = str(selected).replace('/app/backend/static', '/api/static')
         
         return relative_path
     
