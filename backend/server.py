@@ -41,9 +41,10 @@ app.add_middleware(
 )
 
 # Mount static files BEFORE routers (important for FastAPI routing)
+# IMPORTANT: Mount under /api/static to match Kubernetes Ingress rules
 static_path = Path(__file__).parent / "static"
 static_path.mkdir(exist_ok=True)
-app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
+app.mount("/api/static", StaticFiles(directory=str(static_path)), name="static")
 
 # Create a router with the /api prefix for basic routes
 api_router = APIRouter(prefix="/api")
