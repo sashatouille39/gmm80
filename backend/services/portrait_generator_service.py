@@ -452,7 +452,7 @@ Variation #{variation_id} to ensure uniqueness."""
                     hair_path = f"{self.base_path}/hair/{base_filename}_hair.png"
                     with open(hair_path, 'wb') as f:
                         f.write(hair_bytes)
-                    layers['hair'] = f"/static/portraits/hair/{base_filename}_hair.png"
+                    layers['hair'] = f"/api/static/portraits/hair/{base_filename}_hair.png"
             
             # Bouche
             if 'mouth' in layer_types:
