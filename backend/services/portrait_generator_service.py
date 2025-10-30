@@ -472,7 +472,7 @@ Variation #{variation_id} to ensure uniqueness."""
                     nose_path = f"{self.base_path}/nose/{base_filename}_nose.png"
                     with open(nose_path, 'wb') as f:
                         f.write(nose_bytes)
-                    layers['nose'] = f"/static/portraits/nose/{base_filename}_nose.png"
+                    layers['nose'] = f"/api/static/portraits/nose/{base_filename}_nose.png"
             
         except Exception as e:
             print(f"❌ Erreur lors de la génération: {str(e)}")
