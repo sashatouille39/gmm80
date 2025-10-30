@@ -462,7 +462,7 @@ Variation #{variation_id} to ensure uniqueness."""
                     mouth_path = f"{self.base_path}/mouth/{base_filename}_mouth.png"
                     with open(mouth_path, 'wb') as f:
                         f.write(mouth_bytes)
-                    layers['mouth'] = f"/static/portraits/mouth/{base_filename}_mouth.png"
+                    layers['mouth'] = f"/api/static/portraits/mouth/{base_filename}_mouth.png"
             
             # Nez
             if 'nose' in layer_types:
