@@ -220,4 +220,88 @@ async def batch_generate_portraits(
         raise HTTPException(
             status_code=500,
             detail=f"Erreur lors de la génération en lot: {str(e)}"
+
+
+@router.get("/assignments/stats")
+async def get_assignment_stats():
+    """
+    Retourne les statistiques d'utilisation des portraits
+    """
+    try:
+        stats = assignment_service.get_assignment_stats()
+        total_assigned = assignment_service.get_total_assigned()
+        total_remaining = assignment_service.get_total_remaining()
+        
+        return {
+            "success": True,
+            "total_assigned": total_assigned,
+            "total_remaining": total_remaining,
+            "total_available": 7200,
+            "usage_percent": round((total_assigned / 7200 * 100), 1),
+            "stats_by_category": stats
+        }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur lors de la récupération des stats d'assignation: {str(e)}"
+        )
+
+
+@router.post("/assignments/reset")
+async def reset_assignments():
+    """
+    Réinitialise toutes les assignations de portraits
+    Utile pour recommencer une nouvelle partie
+    """
+    try:
+        assignment_service.reset_assignments()
+        
+        return {
+            "success": True,
+            "message": "Toutes les assignations ont été réinitialisées"
+        }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur lors de la réinitialisation: {str(e)}"
+        )
+
+
+@router.get("/realistic/unique")
+async def get_unique_realistic_portrait(nationality: str, gender: str):
+    """
+    Retourne un portrait réaliste UNIQUE (non assigné) pour une nationalité et un genre
+    """
+    try:
+        portrait_path = assignment_service.get_unique_portrait(nationality, gender)
+        
+        if not portrait_path:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Aucun portrait disponible ou tous les portraits sont déjà assignés pour {nationality} ({gender})"
+            )
+        
+        # Obtenir le continent et l'ethnie
+        continent, ethnicity = realistic_portrait_service.get_continent_and_ethnicity(nationality)
+        
+        return {
+            "success": True,
+            "nationality": nationality,
+            "gender": gender,
+            "continent": continent,
+            "ethnicity": ethnicity,
+            "portrait_path": portrait_path,
+            "message": "Portrait unique assigné"
+        }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erreur lors de l'assignation du portrait: {str(e)}"
+        )
+
         )
