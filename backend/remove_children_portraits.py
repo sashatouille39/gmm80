@@ -20,16 +20,24 @@ PORTRAITS_DIR = Path("/app/backend/static/realistic_portraits")
 BACKUP_DIR = Path("/app/backend/static/realistic_portraits_backup_children")
 REPORT_FILE = Path("/app/backend/children_removal_report.json")
 
-# Dossiers à scanner (tous les sous-dossiers d'ethnicités)
+# Dossiers à scanner (tous les sous-dossiers d'ethnicités avec genres)
 PORTRAIT_FOLDERS = [
-    "africa/black",
-    "asia/asian",
-    "asia/indian",
-    "europe/white",
-    "america/white",
-    "america/latino_hispanic",
-    "middle_east/middle_eastern",
-    "oceania/white"
+    "africa/black/M",
+    "africa/black/F",
+    "asia/asian/M",
+    "asia/asian/F",
+    "asia/indian/M",
+    "asia/indian/F",
+    "europe/white/M",
+    "europe/white/F",
+    "america/white/M",
+    "america/white/F",
+    "america/latino_hispanic/M",
+    "america/latino_hispanic/F",
+    "middle_east/middle_eastern/M",
+    "middle_east/middle_eastern/F",
+    "oceania/white/M",
+    "oceania/white/F"
 ]
 
 class ChildrenPortraitRemover:
