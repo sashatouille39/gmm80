@@ -9,11 +9,13 @@ import asyncio
 
 from services.portrait_generator_service import portrait_service
 from services.realistic_portrait_service import RealisticPortraitService
+from services.portrait_assignment_service import PortraitAssignmentService
 
 router = APIRouter(prefix="/api/portraits", tags=["portraits"])
 
-# Initialiser le service de portraits réalistes
+# Initialiser les services
 realistic_portrait_service = RealisticPortraitService()
+assignment_service = PortraitAssignmentService()
 
 
 class PortraitGenerationRequest(BaseModel):
