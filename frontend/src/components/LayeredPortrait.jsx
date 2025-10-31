@@ -143,13 +143,6 @@ const LayeredPortrait = ({ player, size = 'medium', className = '', showNumber =
       >
         {showNumber && player?.number ? player.number : '?'}
       </div>
-      
-      {/* Badge du numéro du joueur en bas à droite */}
-      {showNumber && player?.number && (
-        <div className="absolute bottom-0 right-0 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-tl-lg font-bold shadow-lg" style={{ zIndex: 10 }}>
-          #{player.number}
-        </div>
-      )}
     </div>
   );
 };
