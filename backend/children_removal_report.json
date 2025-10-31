@@ -1,10 +1,25 @@
 {
   "summary": {
-    "total_scanned": 2700,
-    "total_removed": 0,
+    "total_scanned": 3200,
+    "total_removed": 1,
     "errors": 0,
     "min_age_threshold": 21
   },
-  "removed_by_folder": {},
-  "removed_portraits": []
+  "removed_by_folder": {
+    "europe/white/F": {
+      "count": 1,
+      "ages": [
+        14
+      ]
+    }
+  },
+  "removed_portraits": [
+    {
+      "original_path": "/app/backend/static/realistic_portraits/europe/white/F/europe_white_F_34_50_0046.jpg",
+      "backup_path": "/app/backend/static/realistic_portraits_backup_children/europe/white/F/europe_white_F_34_50_0046.jpg",
+      "age": 14,
+      "filename": "europe_white_F_34_50_0046.jpg",
+      "folder": "europe/white/F"
+    }
+  ]
 }
