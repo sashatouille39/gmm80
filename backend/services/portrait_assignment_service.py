@@ -169,39 +169,61 @@ class PortraitAssignmentService:
         else:
             print(f"⚠️ Aucune assignation trouvée pour la partie : {game_id}")
     
-    def get_assignment_stats(self) -> Dict:
+    def get_assignment_stats(self, game_id: str = None) -> Dict:
         """
         Retourne des statistiques sur les assignations
+        
+        Args:
+            game_id: Si fourni, retourne les stats pour cette partie uniquement.
+                    Sinon, retourne les stats globales de toutes les parties.
         
         Returns:
             Dict avec les stats d'utilisation par catégorie
         """
         stats = {}
         
-        for assignment_key, assigned_set in self.assignments.items():
-            parts = assignment_key.split('_')
-            if len(parts) >= 3:
-                continent = parts[0]
-                ethnicity = '_'.join(parts[1:-1])  # Gérer les ethnies avec underscore (ex: latino_hispanic)
-                gender = parts[-1]
-                
-                # Obtenir le total disponible
-                available = self.realistic_service.get_available_portraits(
-                    continent, ethnicity, gender
-                )
-                total_available = len(available)
-                
-                if continent not in stats:
-                    stats[continent] = {}
-                if ethnicity not in stats[continent]:
-                    stats[continent][ethnicity] = {}
-                
-                stats[continent][ethnicity][gender] = {
-                    "assigned": len(assigned_set),
-                    "available": total_available,
-                    "remaining": total_available - len(assigned_set),
-                    "usage_percent": round((len(assigned_set) / total_available * 100), 1) if total_available > 0 else 0
-                }
+        # Si game_id spécifique, analyser seulement cette partie
+        games_to_analyze = {game_id: self.assignments.get(game_id, {})} if game_id else self.assignments
+        
+        for gid, game_assignments in games_to_analyze.items():
+            for assignment_key, assigned_set in game_assignments.items():
+                parts = assignment_key.split('_')
+                if len(parts) >= 3:
+                    continent = parts[0]
+                    ethnicity = '_'.join(parts[1:-1])  # Gérer les ethnies avec underscore (ex: latino_hispanic)
+                    gender = parts[-1]
+                    
+                    # Obtenir le total disponible
+                    available = self.realistic_service.get_available_portraits(
+                        continent, ethnicity, gender
+                    )
+                    total_available = len(available)
+                    
+                    if continent not in stats:
+                        stats[continent] = {}
+                    if ethnicity not in stats[continent]:
+                        stats[continent][ethnicity] = {}
+                    
+                    # Si on analyse plusieurs parties, cumuler les stats
+                    if gender not in stats[continent][ethnicity]:
+                        stats[continent][ethnicity][gender] = {
+                            "assigned": 0,
+                            "available": total_available,
+                            "games": []
+                        }
+                    
+                    stats[continent][ethnicity][gender]["assigned"] += len(assigned_set)
+                    if game_id:
+                        stats[continent][ethnicity][gender]["games"].append(gid)
+        
+        # Calculer les valeurs finales
+        for continent in stats:
+            for ethnicity in stats[continent]:
+                for gender in stats[continent][ethnicity]:
+                    assigned = stats[continent][ethnicity][gender]["assigned"]
+                    available = stats[continent][ethnicity][gender]["available"]
+                    stats[continent][ethnicity][gender]["remaining"] = available - assigned
+                    stats[continent][ethnicity][gender]["usage_percent"] = round((assigned / available * 100), 1) if available > 0 else 0
         
         return stats
     
