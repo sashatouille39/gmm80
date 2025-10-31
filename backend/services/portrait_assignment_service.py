@@ -52,7 +52,9 @@ class PortraitAssignmentService:
             self.ASSIGNMENT_FILE.parent.mkdir(parents=True, exist_ok=True)
             
             # Convertir les sets en listes pour la sérialisation JSON
-            data = {key: list(value) for key, value in self.assignments.items()}
+            data = {}
+            for game_id, game_data in self.assignments.items():
+                data[game_id] = {key: list(value) for key, value in game_data.items()}
             
             with open(self.ASSIGNMENT_FILE, 'w', encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
