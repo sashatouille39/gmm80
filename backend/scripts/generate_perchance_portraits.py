@@ -92,6 +92,40 @@ async def generate_and_download_portraits(num_batches=1):
                     print(f"❌ Erreur lors du remplissage du prompt : {e}")
                     continue
                 
+                # Sélectionner le format "square"
+                print("📐 Sélection du format 'square'...")
+                try:
+                    shape_selectors = [
+                        'select[name*="shape"]',
+                        'select[name*="Shape"]',
+                        '#shape',
+                        'select'
+                    ]
+                    
+                    shape_selected = False
+                    for selector in shape_selectors:
+                        try:
+                            await page.wait_for_selector(selector, timeout=5000)
+                            await page.select_option(selector, value='square')
+                            shape_selected = True
+                            print(f"✅ Format 'square' sélectionné avec le sélecteur : {selector}")
+                            break
+                        except:
+                            try:
+                                await page.select_option(selector, label='square')
+                                shape_selected = True
+                                print(f"✅ Format 'square' sélectionné (par label) avec : {selector}")
+                                break
+                            except:
+                                continue
+                    
+                    if not shape_selected:
+                        print("⚠️  Impossible de sélectionner le format square")
+                    
+                    await asyncio.sleep(1)
+                except Exception as e:
+                    print(f"⚠️  Erreur lors de la sélection du format : {e}")
+                
                 # Sélectionner 9 images dans "how many"
                 print("🔢 Sélection de 9 images...")
                 try:
