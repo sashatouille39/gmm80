@@ -1280,10 +1280,11 @@ const GameArena = ({ currentGame, setCurrentGame, gameState, updateGameState, on
                         <LayeredPortrait 
                           player={player} 
                           size="tiny" 
-                          showNumber={true}
+                          showNumber={false}
                         />
                         <div>
                           <div className="text-white text-sm font-medium flex items-center gap-2">
+                            <span className="text-red-400 text-xs font-bold">#{player.number}</span>
                             {player.name}
                             {player.isCelebrity && (
                               <span className="text-yellow-400 text-xs">👑</span>
