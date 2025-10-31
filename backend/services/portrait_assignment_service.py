@@ -132,22 +132,42 @@ class PortraitAssignmentService:
         
         return selected
     
-    def release_portrait(self, portrait_path: str):
+    def release_portrait(self, portrait_path: str, game_id: str = "default"):
         """
-        Libère un portrait (le rend disponible à nouveau)
+        Libère un portrait (le rend disponible à nouveau) DANS UNE PARTIE SPÉCIFIQUE
         Utile si un joueur est supprimé
         
         Args:
             portrait_path: Le chemin du portrait à libérer
+            game_id: L'identifiant de la partie
         """
-        for assignment_key, assigned_set in self.assignments.items():
+        if game_id not in self.assignments:
+            print(f"⚠️ Aucune assignation trouvée pour la partie : {game_id}")
+            return
+            
+        for assignment_key, assigned_set in self.assignments[game_id].items():
             if portrait_path in assigned_set:
                 assigned_set.remove(portrait_path)
                 self._save_assignments()
-                print(f"✅ Portrait libéré : {portrait_path}")
+                print(f"✅ Portrait libéré [Game: {game_id}]: {portrait_path}")
                 return
         
-        print(f"⚠️ Portrait non trouvé dans les assignations : {portrait_path}")
+        print(f"⚠️ Portrait non trouvé dans les assignations de la partie {game_id}: {portrait_path}")
+    
+    def release_game_portraits(self, game_id: str):
+        """
+        Libère TOUS les portraits d'une partie (quand la partie est terminée)
+        
+        Args:
+            game_id: L'identifiant de la partie à libérer
+        """
+        if game_id in self.assignments:
+            total_released = sum(len(assigned_set) for assigned_set in self.assignments[game_id].values())
+            del self.assignments[game_id]
+            self._save_assignments()
+            print(f"✅ Tous les portraits de la partie {game_id} ont été libérés ({total_released} portraits)")
+        else:
+            print(f"⚠️ Aucune assignation trouvée pour la partie : {game_id}")
     
     def get_assignment_stats(self) -> Dict:
         """
