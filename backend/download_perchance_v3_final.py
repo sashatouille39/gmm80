@@ -271,6 +271,13 @@ class PerchancePortraitDownloader:
                     continue
             
             print(f"\n✅ Batch terminé: {downloaded_count}/{IMAGES_PER_BATCH} images")
+            
+            # Si aucune image n'a été téléchargée, vérifier les erreurs de crédit
+            if downloaded_count == 0:
+                page_content = await page.content()
+                if "too many requests" in page_content.lower():
+                    print("   ⛔ Message 'too many requests' détecté - crédits épuisés")
+                    
             return downloaded_count
             
         except Exception as e:
