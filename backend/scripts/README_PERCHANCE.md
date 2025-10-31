@@ -41,6 +41,7 @@ Script simple qui télécharge les images depuis les URLs que vous copiez.
      tête droite de face, photo professionnelle sur fond blanc. 
      on ne voit que la tête et rien en dessous du cou car la tete prend toute l'image
      ```
+   - Sélectionnez **square** dans "Shape"
    - Sélectionnez **9** dans "How many"
    - Cliquez sur "Generate"
 
