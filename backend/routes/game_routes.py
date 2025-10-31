@@ -223,6 +223,10 @@ init_default_data()
 async def create_game(request: GameCreateRequest):
     """Crée une nouvelle partie avec les joueurs spécifiés"""
     try:
+        # Générer un game_id AVANT de créer les joueurs
+        # pour garantir l'unicité des portraits dans cette partie
+        game_id = str(uuid.uuid4())
+        
         players = []
         
         # Vérifier si tous les joueurs sont fournis par le frontend
