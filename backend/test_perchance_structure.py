@@ -13,7 +13,7 @@ async def analyze_perchance():
     
     async with async_playwright() as p:
         browser = await p.chromium.launch(
-            headless=False,
+            headless=True,
             args=['--no-sandbox', '--disable-setuid-sandbox']
         )
         context = await browser.new_context(
