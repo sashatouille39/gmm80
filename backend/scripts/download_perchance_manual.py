@@ -54,11 +54,12 @@ def main():
     print("   en gros plan, tête droite de face, photo professionnelle")
     print("   sur fond blanc. on ne voit que la tête et rien en dessous")
     print("   du cou car la tete prend toute l'image'")
-    print("3. Sélectionnez 9 images dans 'How many'")
-    print("4. Générez les images")
-    print("5. Pour chaque image, clic droit -> Copier l'adresse de l'image")
-    print("6. Collez toutes les URLs ci-dessous (une par ligne)")
-    print("7. Appuyez sur Entrée deux fois pour terminer")
+    print("3. Sélectionnez 'square' dans 'Shape'")
+    print("4. Sélectionnez 9 images dans 'How many'")
+    print("5. Générez les images")
+    print("6. Pour chaque image, clic droit -> Copier l'adresse de l'image")
+    print("7. Collez toutes les URLs ci-dessous (une par ligne)")
+    print("8. Appuyez sur Entrée deux fois pour terminer")
     
     # Demander l'âge
     print("\n👤 Quel âge ont les personnes sur les photos ?")
