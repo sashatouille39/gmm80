@@ -1,6 +1,6 @@
 """
 Service de gestion des assignations de portraits réalistes
-Assure qu'aucun portrait n'est utilisé deux fois
+Assure qu'aucun portrait n'est utilisé deux fois DANS LA MÊME PARTIE
 """
 import json
 from pathlib import Path
@@ -10,9 +10,9 @@ from services.realistic_portrait_service import RealisticPortraitService
 
 
 class PortraitAssignmentService:
-    """Service pour gérer les assignations uniques de portraits"""
+    """Service pour gérer les assignations uniques de portraits PAR PARTIE"""
     
-    ASSIGNMENT_FILE = Path("/app/backend/data/portrait_assignments.json")
+    ASSIGNMENT_FILE = Path("/app/backend/data/portrait_assignments_by_game.json")
     
     def __init__(self):
         """Initialise le service"""
