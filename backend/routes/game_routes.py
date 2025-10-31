@@ -952,6 +952,10 @@ async def simulate_event_realtime(game_id: str, request: RealtimeSimulationReque
     if len(alive_players) <= 1:
         game.completed = True
         game.end_time = datetime.utcnow()
+        
+        # Libérer les portraits de cette partie
+        release_game_portraits(game.id)
+        
         if alive_players:
             game.winner = max(alive_players, key=lambda p: p.total_score)
         
