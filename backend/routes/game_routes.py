@@ -13,8 +13,18 @@ from models.game_models import (
 from services.game_service import GameService
 from services.vip_service import VipService
 from services.events_service import EventsService
+from services.portrait_assignment_service import PortraitAssignmentService
 
 router = APIRouter(prefix="/api/games", tags=["games"])
+
+def release_game_portraits(game_id: str):
+    """Helper function to release all portraits when a game is completed"""
+    try:
+        assignment_service = PortraitAssignmentService()
+        assignment_service.release_game_portraits(game_id)
+        print(f"✅ Portraits de la partie {game_id} libérés avec succès")
+    except Exception as e:
+        print(f"⚠️ Erreur lors de la libération des portraits de la partie {game_id}: {e}")
 
 async def record_celebrity_death_in_game(celebrity_id: str, game_id: str):
     """Helper function to record celebrity death in game"""
