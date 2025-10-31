@@ -19,13 +19,15 @@ class PortraitAssignmentService:
         self.realistic_service = RealisticPortraitService()
         self.assignments = self._load_assignments()
         
-    def _load_assignments(self) -> Dict[str, Set[str]]:
+    def _load_assignments(self) -> Dict[str, Dict[str, Set[str]]]:
         """
         Charge les assignations depuis le fichier JSON
         
         Returns:
             Dict avec la structure: {
-                "continent_ethnicity_gender": ["portrait_path1", "portrait_path2", ...]
+                "game_id": {
+                    "continent_ethnicity_gender": ["portrait_path1", "portrait_path2", ...]
+                }
             }
         """
         if not self.ASSIGNMENT_FILE.exists():
@@ -35,7 +37,10 @@ class PortraitAssignmentService:
             with open(self.ASSIGNMENT_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 # Convertir les listes en sets pour des recherches plus rapides
-                return {key: set(value) for key, value in data.items()}
+                result = {}
+                for game_id, game_data in data.items():
+                    result[game_id] = {key: set(value) for key, value in game_data.items()}
+                return result
         except Exception as e:
             print(f"⚠️ Erreur lors du chargement des assignations: {e}")
             return {}
