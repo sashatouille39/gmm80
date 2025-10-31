@@ -211,13 +211,7 @@ class PerchancePortraitDownloader:
             print(f"⏳ Attente de la génération ({WAIT_TIME_GENERATION}s)...")
             await asyncio.sleep(WAIT_TIME_GENERATION)
             
-            # Vérifier les erreurs
-            page_content = await page.content()
-            if "too many requests" in page_content.lower() or "quota" in page_content.lower():
-                print("   ⛔ Crédits Perchance épuisés détectés!")
-                return 0
-            
-            # Chercher les images générées
+            # Chercher les images générées AVANT de vérifier les erreurs
             print("📸 Recherche et téléchargement des images...")
             
             downloaded_count = 0
