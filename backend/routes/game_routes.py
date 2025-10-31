@@ -1144,6 +1144,10 @@ async def get_realtime_updates(game_id: str):
             if len(alive_players_after) <= 1 or game.current_event_index >= len(game.events):
                 game.completed = True
                 game.end_time = datetime.utcnow()
+                
+                # Libérer les portraits de cette partie
+                release_game_portraits(game.id)
+                
                 if alive_players_after:
                     game.winner = max(alive_players_after, key=lambda p: p.total_score)
                 
