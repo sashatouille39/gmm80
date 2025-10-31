@@ -68,14 +68,16 @@ class PortraitAssignmentService:
     def get_unique_portrait(
         self, 
         nationality: str, 
-        gender: str
+        gender: str,
+        game_id: str = "default"
     ) -> Optional[str]:
         """
-        Sélectionne un portrait unique qui n'a pas encore été assigné
+        Sélectionne un portrait unique qui n'a pas encore été assigné DANS CETTE PARTIE
         
         Args:
             nationality: La nationalité du joueur
             gender: Le genre ('M' ou 'F')
+            game_id: L'identifiant de la partie (pour isoler les assignations)
             
         Returns:
             Le chemin relatif vers le portrait unique, ou None si tous sont utilisés
@@ -92,11 +94,15 @@ class PortraitAssignmentService:
             print(f"⚠️ Aucun portrait disponible pour {nationality} ({gender})")
             return None
         
+        # Initialiser les assignations pour cette partie si nécessaire
+        if game_id not in self.assignments:
+            self.assignments[game_id] = {}
+        
         # Obtenir la clé d'assignation
         assignment_key = self._get_assignment_key(continent, ethnicity, gender)
         
-        # Obtenir les portraits déjà assignés
-        assigned_portraits = self.assignments.get(assignment_key, set())
+        # Obtenir les portraits déjà assignés DANS CETTE PARTIE
+        assigned_portraits = self.assignments[game_id].get(assignment_key, set())
         
         # Filtrer pour ne garder que les portraits non assignés
         available_paths = [
@@ -106,27 +112,23 @@ class PortraitAssignmentService:
         unassigned = [p for p in available_paths if p not in assigned_portraits]
         
         if not unassigned:
-            print(f"⚠️ Tous les portraits de {continent}/{ethnicity}/{gender} sont déjà assignés ({len(assigned_portraits)} utilisés)")
-            # Tous les portraits sont utilisés, on peut soit :
-            # 1. Retourner None (pas de portrait)
-            # 2. Réutiliser un portrait aléatoire (moins idéal)
-            # 3. Lever une exception
-            # Pour l'instant, on retourne None
+            print(f"⚠️ Tous les portraits de {continent}/{ethnicity}/{gender} sont déjà assignés dans cette partie ({len(assigned_portraits)} utilisés)")
+            # Tous les portraits sont utilisés dans cette partie
             return None
         
         # Sélectionner aléatoirement parmi les non assignés
         import random
         selected = random.choice(unassigned)
         
-        # Marquer comme assigné
-        if assignment_key not in self.assignments:
-            self.assignments[assignment_key] = set()
-        self.assignments[assignment_key].add(selected)
+        # Marquer comme assigné POUR CETTE PARTIE
+        if assignment_key not in self.assignments[game_id]:
+            self.assignments[game_id][assignment_key] = set()
+        self.assignments[game_id][assignment_key].add(selected)
         
         # Sauvegarder
         self._save_assignments()
         
-        print(f"✅ Portrait assigné : {selected} ({len(assigned_portraits)+1}/{len(available_paths)} utilisés)")
+        print(f"✅ Portrait assigné [Game: {game_id}]: {selected} ({len(assigned_portraits)+1}/{len(available_paths)} utilisés dans cette partie)")
         
         return selected
     
