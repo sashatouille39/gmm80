@@ -296,15 +296,16 @@ class PerchancePortraitDownloader:
             await page.close()
     
     async def run(self):
-        """Exécute le téléchargement complet"""
+        """Exécute le téléchargement complet en boucle jusqu'à épuisement des crédits"""
         print("\n" + "="*70)
         print("🎯 TÉLÉCHARGEMENT AUTOMATIQUE - PERCHANCE AI FACE GENERATOR")
+        print("🔄 MODE ILLIMITÉ : Continue jusqu'à épuisement des crédits")
         print("="*70)
         print(f"📁 Dossier cible: {self.target_dir}")
-        print(f"🎭 Âges à générer: {', '.join(map(str, AGES))} ans")
+        print(f"🎭 Âges en rotation: {', '.join(map(str, AGES))} ans")
         print(f"📊 Images par batch: {IMAGES_PER_BATCH}")
-        print(f"📦 Total de batches: {len(AGES)}")
         print(f"🕐 Temps de génération: ~{WAIT_TIME_GENERATION}s par batch")
+        print(f"⛔ Arrêt après {MAX_CONSECUTIVE_FAILURES} échecs consécutifs")
         print("="*70 + "\n")
         
         # Créer le dossier si nécessaire
@@ -313,29 +314,53 @@ class PerchancePortraitDownloader:
         # Initialiser le navigateur
         await self.setup_browser()
         
+        batch_number = 0
+        consecutive_failures = 0
+        
         try:
-            # Télécharger pour chaque âge
-            for batch_num, age in enumerate(AGES, 1):
-                downloaded = await self.download_batch(age, batch_num)
+            # Boucle infinie jusqu'à échec critique
+            while True:
+                # Alterner entre les âges
+                age = AGES[batch_number % len(AGES)]
+                batch_number += 1
+                
+                print(f"\n{'='*70}")
+                print(f"🔄 BATCH #{batch_number} - Âge: {age} ans")
+                print(f"📊 Statistiques: {self.total_downloaded} images téléchargées au total")
+                print(f"{'='*70}")
+                
+                downloaded = await self.download_batch(age, batch_number)
+                
+                if downloaded == 0:
+                    consecutive_failures += 1
+                    print(f"\n⚠️  Échec #{consecutive_failures}/{MAX_CONSECUTIVE_FAILURES}")
+                    
+                    if consecutive_failures >= MAX_CONSECUTIVE_FAILURES:
+                        print(f"\n🛑 ARRÊT: {MAX_CONSECUTIVE_FAILURES} échecs consécutifs détectés")
+                        print("   Probablement plus de crédits Perchance disponibles.")
+                        break
+                else:
+                    # Réinitialiser le compteur d'échecs si succès
+                    consecutive_failures = 0
                 
                 # Pause entre les batches
-                if batch_num < len(AGES):
-                    pause_time = 5
-                    print(f"\n⏸️  Pause de {pause_time} secondes avant le prochain batch...")
-                    await asyncio.sleep(pause_time)
+                pause_time = 5
+                print(f"\n⏸️  Pause de {pause_time} secondes avant le prochain batch...")
+                await asyncio.sleep(pause_time)
             
             # Résumé final
             print("\n" + "="*70)
             print("📊 RÉSUMÉ FINAL")
             print("="*70)
+            print(f"🔢 Total de batches traités: {batch_number}")
             print(f"✅ Total d'images téléchargées: {self.total_downloaded}")
-            print(f"🎯 Objectif: {len(AGES) * IMAGES_PER_BATCH} images")
-            print(f"📈 Taux de réussite: {(self.total_downloaded / (len(AGES) * IMAGES_PER_BATCH) * 100):.1f}%")
-            print(f"❌ Erreurs rencontrées: {len(self.errors)}")
+            print(f"📈 Moyenne par batch réussi: {self.total_downloaded / max(batch_number - consecutive_failures, 1):.1f} images")
+            print(f"❌ Échecs consécutifs finaux: {consecutive_failures}")
+            print(f"⚠️  Erreurs rencontrées: {len(self.errors)}")
             
             if self.errors:
-                print("\n⚠️  Liste des erreurs:")
-                for error in self.errors:
+                print("\n📝 Dernières erreurs:")
+                for error in self.errors[-5:]:  # Afficher seulement les 5 dernières
                     print(f"   - {error}")
             
             # Vérifier les fichiers créés
@@ -343,8 +368,13 @@ class PerchancePortraitDownloader:
             files = list(self.target_dir.glob("perchance_*.jpg"))
             print(f"   {len(files)} fichier(s) Perchance trouvé(s)")
             
-            print("\n🎉 TÉLÉCHARGEMENT TERMINÉ!")
+            print("\n🎉 TÉLÉCHARGEMENT TERMINÉ - CRÉDITS ÉPUISÉS!")
             print("="*70 + "\n")
+            
+        except KeyboardInterrupt:
+            print("\n\n⚠️  Arrêt manuel par l'utilisateur")
+            print(f"📊 {self.total_downloaded} images téléchargées avant l'arrêt")
+            raise
             
         finally:
             await self.close_browser()
