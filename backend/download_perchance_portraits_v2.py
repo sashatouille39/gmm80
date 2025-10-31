@@ -225,6 +225,18 @@ class PerchancePortraitDownloader:
             print(f"⏳ Attente de la génération ({WAIT_TIME_GENERATION}s)...")
             await asyncio.sleep(WAIT_TIME_GENERATION)
             
+            # Vérifier s'il y a des messages d'erreur (crédits épuisés, etc.)
+            error_messages = await page.query_selector_all("text=/too many requests|quota|limit|credit/i")
+            if error_messages:
+                print("   ⛔ Message d'erreur détecté (probablement crédits épuisés)")
+                for msg in error_messages[:3]:
+                    try:
+                        text = await msg.inner_text()
+                        print(f"      → {text[:100]}")
+                    except:
+                        pass
+                return 0
+            
             # Attendre explicitement le chargement des images
             valid_images = await self.wait_for_images_to_load(page, IMAGES_PER_BATCH)
             
