@@ -43,7 +43,7 @@ class PerchancePortraitDownloader:
         print("🚀 Initialisation du navigateur...")
         self.playwright = await async_playwright().start()
         self.browser = await self.playwright.chromium.launch(
-            headless=False,  # Mode visible pour déboguer
+            headless=True,  # Mode headless pour serveur
             args=['--no-sandbox', '--disable-setuid-sandbox']
         )
         self.context = await self.browser.new_context(
