@@ -790,6 +790,9 @@ async def simulate_event(game_id: str):
         game.completed = True
         game.end_time = datetime.utcnow()
         
+        # Libérer les portraits de cette partie
+        release_game_portraits(game.id)
+        
         # Déterminer le gagnant
         if alive_players_after:
             game.winner = max(alive_players_after, key=lambda p: p.total_score)
