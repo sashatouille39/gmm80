@@ -467,8 +467,14 @@ class GameService:
         return final_name
     
     @classmethod
-    def generate_multiple_players(cls, count: int) -> List[Player]:
-        """Génère plusieurs joueurs en évitant les noms en double"""
+    def generate_multiple_players(cls, count: int, game_id: str = None) -> List[Player]:
+        """
+        Génère plusieurs joueurs en évitant les noms et portraits en double
+        
+        Args:
+            count: Nombre de joueurs à générer
+            game_id: Identifiant de la partie (pour garantir l'unicité des portraits)
+        """
         players = []
         used_names = set()
         
@@ -498,7 +504,7 @@ class GameService:
                 gender=gender,
                 role=selected_role,
                 stats=stats,
-                portrait=cls._generate_portrait(nationality_key, gender),
+                portrait=cls._generate_portrait(nationality_key, gender, game_id=game_id),
                 uniform=cls._generate_uniform(),
                 alive=True,
                 health=100,
