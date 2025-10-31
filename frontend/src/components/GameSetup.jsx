@@ -463,7 +463,7 @@ const GameSetup = ({ gameState, onStartGame }) => {
                             <LayeredPortrait 
                               player={player} 
                               size="small"
-                              showNumber={true}
+                              showNumber={false}
                               className={`${
                                 player.isCustom 
                                   ? 'ring-2 ring-blue-500' 
@@ -473,6 +473,8 @@ const GameSetup = ({ gameState, onStartGame }) => {
                               }`}
                             />
                           </div>
+                          {/* Numéro du joueur */}
+                          <div className="text-red-400 text-xs font-bold mb-1">#{player.number}</div>
                           <div className="text-white text-sm font-medium truncate flex items-center justify-center gap-1">
                             {player.name}
                             {player.isCustom && <span className="text-blue-400">✨</span>}
