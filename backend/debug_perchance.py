@@ -21,7 +21,10 @@ async def debug_perchance():
         
         try:
             print("1️⃣ Navigation...")
-            await page.goto(PERCHANCE_URL, wait_until='networkidle', timeout=60000)
+            try:
+                await page.goto(PERCHANCE_URL, wait_until='networkidle', timeout=30000)
+            except:
+                await page.goto(PERCHANCE_URL, wait_until='domcontentloaded', timeout=15000)
             await asyncio.sleep(20)
             
             # Capture avant interaction
