@@ -23,6 +23,7 @@ PERCHANCE_URL = "https://perchance.org/ai-face-generator"
 AGES = [20, 30, 40]
 IMAGES_PER_BATCH = 9
 WAIT_TIME_GENERATION = 90  # Temps d'attente pour la génération (secondes)
+MAX_CONSECUTIVE_FAILURES = 3  # Arrêt après 3 échecs consécutifs (probablement plus de crédits)
 
 # Prompt template
 PROMPT_TEMPLATE = """face d'un homme asiatique de l'est qui a {age} ans en gros plan, tête droite de face, photo professionnelle sur fond blanc. on ne voit que la tête et rien en dessous du cou car la tete prend toute l'image"""
