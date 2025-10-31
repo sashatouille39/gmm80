@@ -602,6 +602,10 @@ async def simulate_event(game_id: str):
                 # Plus d'événements, terminer la partie avec les survivants actuels
                 game.completed = True
                 game.end_time = datetime.utcnow()
+                
+                # Libérer les portraits de cette partie
+                release_game_portraits(game.id)
+                
                 game.winner = max(alive_players_before, key=lambda p: p.total_score) if alive_players_before else None
                 
                 # Calculer les gains réels des VIPs avec la logique correcte de récupération
