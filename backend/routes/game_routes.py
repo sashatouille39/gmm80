@@ -328,8 +328,9 @@ async def create_game(request: GameCreateRequest):
         event_cost = len(organized_events) * 5000  # 5,000$ par épreuve comme demandé
         total_cost = base_cost + player_cost + event_cost
         
-        # Créer la partie
+        # Créer la partie avec l'ID pré-généré
         game = Game(
+            id=game_id,
             players=players,
             events=organized_events,
             total_cost=total_cost
