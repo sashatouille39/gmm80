@@ -227,21 +227,56 @@ class PortraitAssignmentService:
         
         return stats
     
-    def reset_assignments(self):
+    def reset_assignments(self, game_id: str = None):
         """
-        Réinitialise toutes les assignations
-        Utile pour recommencer une nouvelle partie
+        Réinitialise les assignations
+        
+        Args:
+            game_id: Si fourni, réinitialise seulement cette partie.
+                    Sinon, réinitialise TOUTES les parties.
         """
-        self.assignments = {}
-        self._save_assignments()
-        print("✅ Toutes les assignations ont été réinitialisées")
+        if game_id:
+            if game_id in self.assignments:
+                del self.assignments[game_id]
+                self._save_assignments()
+                print(f"✅ Les assignations de la partie {game_id} ont été réinitialisées")
+            else:
+                print(f"⚠️ Aucune assignation trouvée pour la partie : {game_id}")
+        else:
+            self.assignments = {}
+            self._save_assignments()
+            print("✅ Toutes les assignations ont été réinitialisées")
     
-    def get_total_assigned(self) -> int:
-        """Retourne le nombre total de portraits assignés"""
-        return sum(len(assigned_set) for assigned_set in self.assignments.values())
+    def get_total_assigned(self, game_id: str = None) -> int:
+        """
+        Retourne le nombre total de portraits assignés
+        
+        Args:
+            game_id: Si fourni, compte seulement pour cette partie.
+                    Sinon, compte toutes les parties.
+        """
+        if game_id:
+            if game_id in self.assignments:
+                return sum(len(assigned_set) for assigned_set in self.assignments[game_id].values())
+            return 0
+        else:
+            total = 0
+            for game_assignments in self.assignments.values():
+                total += sum(len(assigned_set) for assigned_set in game_assignments.values())
+            return total
     
-    def get_total_remaining(self) -> int:
-        """Retourne le nombre total de portraits encore disponibles"""
-        total_available = 7200  # Notre collection complète
-        total_assigned = self.get_total_assigned()
+    def get_total_remaining(self, game_id: str = None) -> int:
+        """
+        Retourne le nombre total de portraits encore disponibles
+        
+        Args:
+            game_id: Si fourni, compte pour cette partie.
+                    Sinon, donne une estimation globale.
+        """
+        total_available = 7081  # Notre collection actuelle après suppressions
+        total_assigned = self.get_total_assigned(game_id)
         return total_available - total_assigned
+    
+    def get_active_games(self) -> list:
+        """Retourne la liste des game_id ayant des portraits assignés"""
+        return list(self.assignments.keys())
