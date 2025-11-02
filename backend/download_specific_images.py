@@ -59,7 +59,7 @@ def download_images():
             response.raise_for_status()
             
             # Générer le nom de fichier
-            filename = f"asia_asian_F_21_35_{next_num:04d}.jpg"
+            filename = f"asia_asian_M_21_35_{next_num:04d}.jpg"
             filepath = TARGET_DIR / filename
             
             # Sauvegarder
